@@ -14,12 +14,12 @@ class Title extends Phaser.Scene {
         }).setOrigin(0.5);
 
         // set up cursor keys
-        cursors = this.input.keyboard.createCursorKeys();
+        controls = this.input.keyboard.createCursorKeys();
     }
 
     update() {
         // check for UP input
-        if (Phaser.Input.Keyboard.JustDown(cursors.up)) {
+        if (Phaser.Input.Keyboard.JustDown(controls.up)) {
             this.scene.start('playScene');
         }
     }

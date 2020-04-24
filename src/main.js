@@ -26,4 +26,5 @@ let game = new Phaser.Game(config);
 // define globals
 let centerX = game.config.width/2;
 let centerY = game.config.height/2;
-let cursors;
+let controls;
+let paddle = null;
