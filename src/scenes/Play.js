@@ -11,13 +11,52 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // define key codes
+        var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
-        // spawn player
-        this.player1 = new Player(this, game.config.width/2, 255,
-            'pixel_guy').setScale(1, 1).setOrigin(0,0);
+        // spawn player and set its gravity
+        this.player = this.physics.add.sprite(game.config.width/2, 400, 'pixel_guy');
+        this.player.setGravityY(500);
 
-        //spawn floor
-        this.floor1 = new Floor(this, -25, 550,
-            'bounds').setScale(4,0.5).setOrigin(0,0);
+        // spawn the floor and set it immovable
+        let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds').
+            setScale(4, 0.5);
+        floor.setImmovable();
+
+        // spawn the roof and set it immovable
+        let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds').
+            setScale(4, 0.5);
+        roof.setImmovable();
+
+        // set the collision property of player on floor and roof
+        this.physics.add.collider(this.player, floor);
+        this.physics.add.collider(this.player, roof);
+
+        // set up cursor keys
+        cursors = this.input.keyboard.createCursorKeys();
+
     }
+
+    //Jump function
+    jump() {
+        this.player.setVelocityY(-500);
+    }
+
+    update() {
+        // jump functionality, single jump only
+        if (Phaser.Input.Keyboard.JustDown(cursors.up) && 
+            this.player.body.touching.down) {
+            this.jump();
+        }
+
+        // Spin the player whilst in the air
+        if(!this.player.body.touching.down) {
+            this.player.angle += 10;
+        }
+
+        // reset the player angle when back on the ground
+        if(this.player.body.touching.down) {
+            this.player.angle = 0;
+        }
+    }    
 }
