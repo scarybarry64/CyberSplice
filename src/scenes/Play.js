@@ -3,12 +3,15 @@ class Play extends Phaser.Scene {
         super('playScene');
     }
 
-    create() {
-        // Temporary text to indicate on Play screen
-        this.add.text(centerX, centerY, 'Play Scene', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: '#FACADE'
-        }).setOrigin(0.5);
+    preload() {
+        // load the necessary images and tile sprites
+        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
+    }
 
-        // setting background to FACADE
+    create() {
+        
+        // spawn player
+        this.player1 = new Player(this, game.config.width/2, 255,
+            'pixel_guy').setScale(1, 1).setOrigin(0,0);
     }
 }
