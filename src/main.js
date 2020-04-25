@@ -17,6 +17,7 @@ let config = {
             }
         }
     },
+    //backgroundColor: "FFFFFF",
     scene: [Title, Play],
 };
 
