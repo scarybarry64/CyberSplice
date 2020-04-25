@@ -6,5 +6,5 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // adding the object to the existing scene so it shows up
         scene.add.existing(this);
     }
-
+    
 }
