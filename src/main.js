@@ -13,7 +13,7 @@ let config = {
             debug: false,
             gravity: {
                 x: 0,
-                y: 0
+                y: 150
             }
         }
     },
