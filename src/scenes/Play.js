@@ -16,6 +16,7 @@ class Play extends Phaser.Scene {
         
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/2, 400, 'pixel_guy');
+        this.player.setVelocityY(-300);
         this.player.setGravityY(500);
 
         // spawn the floor and set it immovable
