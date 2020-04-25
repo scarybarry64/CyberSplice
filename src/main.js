@@ -10,13 +10,10 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false,
-            gravity: {
-                x: 0,
-                y: 0
-            }
+            debug: true,
         }
     },
+    //backgroundColor: "FFFFFF",
     scene: [Title, Play],
 };
 
