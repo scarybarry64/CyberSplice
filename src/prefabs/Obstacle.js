@@ -10,6 +10,16 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
         scene.add.existing(this);
     }
 
+    getRandomNumY() {
+        var ranNumY = Phaser.Math.Between(1.0, 6.5);
+        return ranNumY;
+    }
+
+    getRandomNumX() {
+        var ranNumX = Phaser.Math.Between(1.0, 3);
+        return ranNumX;
+    }
+
     update() {
         this.setVelocityX(game.settings.scrollSpeed);
 
@@ -20,14 +30,10 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
 
     // reset the obstacle to the right of the screen
     reset() {
-        console.log("YEET");
+        console.log(this.getRandomNumY());
         this.x = game.config.width; //position of right side of screen
-        this.setScale(1,6.5); // randomize the size
+        this.setScale(this.getRandomNumX(), this.getRandomNumY()); // randomize the size (6.5 is current height of jump)
         //this.setOrigin(0.5, 1); //set the origin to the bottom of the sprite
-        
-    }
-
-    getRandomNum() {
         
     }
 }
