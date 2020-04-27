@@ -31,6 +31,10 @@ class Play extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
+        // spawn first obstacle
+        this.initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
+            setScale(1, 4);
+
         // set the collision property of player on floor and roof
         this.physics.add.collider(this.player, floor);
         this.physics.add.collider(this.player, roof);
@@ -79,5 +83,8 @@ class Play extends Phaser.Scene {
                 this.isSlamming = false;
             }
         }
+
+        // move initial obstacle
+        this.initObstacle.setVelocityX(game.settings.scrollSpeed);
     }    
 }
