@@ -13,6 +13,7 @@ class Title extends Phaser.Scene {
 
     create() {
 
+        // spawn frozen pixel guy
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         this.player.setGravityY(0);
 
@@ -25,6 +26,10 @@ class Title extends Phaser.Scene {
         let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds').
             setScale(4, 0.5);
         roof.setImmovable();
+
+        // spawn first obstacle
+        let initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
+            setScale(1, 4);
 
         // placeholder title screen
         this.add.text(centerX, centerY-50, 'G2P1 Endless Runner', {
