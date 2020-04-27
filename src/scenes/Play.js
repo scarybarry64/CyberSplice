@@ -34,15 +34,24 @@ class Play extends Phaser.Scene {
         // spawn first obstacle
         this.initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
             setScale(1, 4);
+        this.initObstacle.setImmovable();
+
+        // spawn test obstacle
+        this.initObstacle2 = this.physics.add.sprite(game.config.width, 480, 'obstacle').
+        setScale(1, 4);
+        this.initObstacle2.setImmovable();
 
         // set the collision property of player on floor and roof
         this.physics.add.collider(this.player, floor);
         this.physics.add.collider(this.player, roof);
+        this.physics.add.collider(this.player, this.initObstacle);
+        this.physics.add.collider(this.player, this.initObstacle2); //testing
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
 
         this.isSlamming = false; //keeps track of if player is ground slamming
+        this.isGameOver = false;
 
     }
 
@@ -84,7 +93,18 @@ class Play extends Phaser.Scene {
             }
         }
 
+        //check if out of bounds to the left
+        if(this.player.x < 100 && !this.isGameOver) {
+            console.log("GAME OVA");
+            this.isGameOver = true;
+            this.scene.start('gameOver');
+        }
+
         // move initial obstacle
         this.initObstacle.setVelocityX(game.settings.scrollSpeed);
+
+        // move test obstacle
+        this.initObstacle2.setVelocityX(game.settings.scrollSpeed);
+        
     }    
 }
