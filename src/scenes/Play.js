@@ -50,12 +50,13 @@ class Play extends Phaser.Scene {
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
 
+        // BOOLEAN VARS
         this.isSlamming = false; //keeps track of if player is ground slamming
-        this.isGameOver = false;
+        this.isGameOver = false; //keeps track of if game should go to game over scene
 
     }
 
-    //Jump function
+    // Jump function
     jump() {
         this.player.setVelocityY(-500);
     }
@@ -72,7 +73,9 @@ class Play extends Phaser.Scene {
             this.jump();
         }
 
-        if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+        // ground slam functionality
+        if (Phaser.Input.Keyboard.JustDown(controls.down) && 
+        !this.player.body.touching.down) {
             this.isSlamming = true;
             this.player.angle = 0;
             this.groundSlam();
