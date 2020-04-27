@@ -33,15 +33,32 @@ class Play extends Phaser.Scene {
         roof.setImmovable();
 
         // spawn initial obstacle that appears in title screen
-        this.initObstacle = new Obstacle(this, game.config.width/3, 542, 'obstacle').
+        this.Obstacle1 = new Obstacle(this, game.config.width/3, 542, 'obstacle').
         setScale(1, 4).setOrigin(0.5, 1);
-        this.add.existing(this.initObstacle);
+        this.add.existing(this.Obstacle1);
 
-        // set the collision property of player on floor and roof
+        //spawn second obstacle
+        this.Obstacle2 = new Obstacle(this, game.config.width, 542, 'obstacle').
+        setScale(2, 2).setOrigin(0.5, 1);
+        this.add.existing(this.Obstacle2);
+
+        //spawn third obstacle
+        this.Obstacle3 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
+        setScale(3, 1).setOrigin(0.5, 1);
+        this.add.existing(this.Obstacle3);
+
+        //spawn fourth obstacle
+        this.Obstacle4 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
+        setScale(3, 1).setOrigin(0.5, 1);
+        this.add.existing(this.Obstacle4);
+
+        // set the collision property of player on objects
         this.physics.add.collider(this.player, floor);
         this.physics.add.collider(this.player, roof);
-        this.physics.add.collider(this.player, this.initObstacle);
-       // this.physics.add.collider(this.player, this.initObstacle2); //testing
+        this.physics.add.collider(this.player, this.Obstacle1);
+        this.physics.add.collider(this.player, this.Obstacle2);
+        this.physics.add.collider(this.player, this.Obstacle3);
+        this.physics.add.collider(this.player, this.Obstacle4);
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
@@ -50,6 +67,10 @@ class Play extends Phaser.Scene {
         this.isSlamming = false; //keeps track of if player is ground slamming
         this.isGameOver = false; //keeps track of if game should go to game over scene
 
+    }
+
+    spawnObstacles() {
+        
     }
 
     // Jump function
@@ -69,7 +90,11 @@ class Play extends Phaser.Scene {
 
     update() {
 
-        this.initObstacle.update();
+        // Update the Obstacles
+        this.Obstacle1.update();
+        this.Obstacle2.update();
+        this.Obstacle3.update();
+        this.Obstacle4.update();
 
         // jump functionality, single jump only
         if (Phaser.Input.Keyboard.JustDown(controls.up) && 
