@@ -18,6 +18,7 @@ class Play extends Phaser.Scene {
         
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
+        game.settings.gamePlayer = this.player;
         this.player.setVelocityY(-300);
         this.player.setGravityY(500);
 
@@ -31,6 +32,7 @@ class Play extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
+        /*
         // spawn first obstacle
         this.initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
             setScale(1, 4);
@@ -41,11 +43,16 @@ class Play extends Phaser.Scene {
         setScale(1, 4);
         this.initObstacle2.setImmovable();
 
+        */
+
+        this.initObstacle = new Obstacle(this, game.config.width/3, 480, 'obstacle').setScale(1, 4);
+        this.add.existing(this.initObstacle);
+
         // set the collision property of player on floor and roof
         this.physics.add.collider(this.player, floor);
         this.physics.add.collider(this.player, roof);
         this.physics.add.collider(this.player, this.initObstacle);
-        this.physics.add.collider(this.player, this.initObstacle2); //testing
+       // this.physics.add.collider(this.player, this.initObstacle2); //testing
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
@@ -66,7 +73,15 @@ class Play extends Phaser.Scene {
         this.player.setVelocityY(850);
     }
 
+    // Randomize the size of the obstacle
+    spawnObstacle() {
+
+    }
+
     update() {
+
+        this.initObstacle.update();
+
         // jump functionality, single jump only
         if (Phaser.Input.Keyboard.JustDown(controls.up) && 
             this.player.body.touching.down) {
@@ -101,13 +116,6 @@ class Play extends Phaser.Scene {
             console.log("GAME OVA");
             this.isGameOver = true;
             this.scene.start('gameOver');
-        }
-
-        // move initial obstacle
-        this.initObstacle.setVelocityX(game.settings.scrollSpeed);
-
-        // move test obstacle
-        this.initObstacle2.setVelocityX(game.settings.scrollSpeed);
-        
+        }   
     }    
 }
