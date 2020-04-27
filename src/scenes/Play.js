@@ -32,20 +32,9 @@ class Play extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
-        /*
-        // spawn first obstacle
-        this.initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
-            setScale(1, 4);
-        this.initObstacle.setImmovable();
-
-        // spawn test obstacle
-        this.initObstacle2 = this.physics.add.sprite(game.config.width, 480, 'obstacle').
-        setScale(1, 4);
-        this.initObstacle2.setImmovable();
-
-        */
-
-        this.initObstacle = new Obstacle(this, game.config.width/3, 480, 'obstacle').setScale(1, 4);
+        // spawn initial obstacle that appears in title screen
+        this.initObstacle = new Obstacle(this, game.config.width/3, 480, 'obstacle').
+        setScale(1, 4).setOrigin(this.x, this.y);
         this.add.existing(this.initObstacle);
 
         // set the collision property of player on floor and roof
@@ -112,7 +101,7 @@ class Play extends Phaser.Scene {
         }
 
         //check if out of bounds to the left
-        if(this.player.x < 100 && !this.isGameOver) {
+        if(this.player.x < 148 && !this.isGameOver) {
             console.log("GAME OVA");
             this.isGameOver = true;
             this.scene.start('gameOver');
