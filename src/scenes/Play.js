@@ -4,35 +4,6 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-<<<<<<< HEAD
-        // load paddle
-        this.load.image('paddle', './assets/images/paddle.png');
-    }
-
-    create() {
-        // set up cursor keys
-        controls = this.input.keyboard.createCursorKeys();
-
-        // set up placeholder paddle
-        paddle = this.physics.add.sprite(32, centerY, 'paddle').setOrigin(0.5);
-        paddle.setCollideWorldBounds(true);
-        paddle.setImmovable();
-        paddle.setMaxVelocity(0, 600);
-        paddle.setDragY(200);
-        paddle.setDepth(1);
-        paddle.isDead = false; // tracks if dead
-    }
-
-    update() {
-        // more stuff
-        if (controls.up.isDown) {
-            paddle.body.velocity.y -= 150;
-        }
-        else if (controls.down.isDown) {
-            paddle.body.velocity.y += 150;
-        }
-    }
-=======
         // load the necessary images and tile sprites
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
@@ -63,7 +34,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, roof);
 
         // set up cursor keys
-        cursors = this.input.keyboard.createCursorKeys();
+        controls = this.input.keyboard.createCursorKeys();
 
     }
 
@@ -74,7 +45,7 @@ class Play extends Phaser.Scene {
 
     update() {
         // jump functionality, single jump only
-        if (Phaser.Input.Keyboard.JustDown(cursors.up) && 
+        if (Phaser.Input.Keyboard.JustDown(controls.up) && 
             this.player.body.touching.down) {
             this.jump();
         }
@@ -89,5 +60,4 @@ class Play extends Phaser.Scene {
             this.player.angle = 0;
         }
     }    
->>>>>>> e72fba88031579d7e725c65f31f6fb9ec824caf3
 }
