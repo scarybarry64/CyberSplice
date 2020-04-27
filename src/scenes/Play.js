@@ -67,6 +67,7 @@ class Play extends Phaser.Scene {
 
         // BOOLEAN VARS
         this.isSlamming = false; //keeps track of if player is ground slamming
+        this.isDashing = false;
         this.isGameOver = false; //keeps track of if game should go to game over scene
 
     }
@@ -109,14 +110,18 @@ class Play extends Phaser.Scene {
         }
 
         // move player to the left
-        if(this.keyLeft.isDown) {
+        if(this.keyLeft.isDown && !this.player.body.touching.down
+            && !this.isDashing) {
             console.log('LEFT');
-            this.player.setVelocityX(-25);
+            this.player.setVelocityX(-50);
+            this.isDashing = true;
         }
         // move player to the right
-        if(this.keyRight.isDown) {
+        if(this.keyRight.isDown && !this.player.body.touching.down
+            && !this.isDashing) {
             console.log('RIGHT');
-            this.player.setVelocityX(25);
+            this.player.setVelocityX(50);
+            this.isDashing = true;
         }
 
         // Spin the player whilst in the air
@@ -127,10 +132,12 @@ class Play extends Phaser.Scene {
         // reset the player angle when back on the ground
         if(this.player.body.touching.down) {
             this.player.angle = 0;
+            this.isDashing = false;
+            this.player.setVelocityX(0);
             if(this.isSlamming) {
                 // shake the camera duration and intensity
                 this.cameras.main.shake(50, 0.005);
-                this.isSlamming = false;
+                this.isSlamming = false;   
             }
         }
 
