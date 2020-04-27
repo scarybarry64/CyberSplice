@@ -18,10 +18,16 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
         }
     }
 
+    // reset the obstacle to the right of the screen
     reset() {
         console.log("YEET");
-        this.x = game.config.width;
-        this.setScale(4,8);
+        this.x = game.config.width; //position of right side of screen
+        this.setScale(1,6.5); // randomize the size
+        //this.setOrigin(0.5, 1); //set the origin to the bottom of the sprite
+        
+    }
+
+    getRandomNum() {
         
     }
 }

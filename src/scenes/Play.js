@@ -33,8 +33,8 @@ class Play extends Phaser.Scene {
         roof.setImmovable();
 
         // spawn initial obstacle that appears in title screen
-        this.initObstacle = new Obstacle(this, game.config.width/3, 480, 'obstacle').
-        setScale(1, 4).setOrigin(this.x, this.y);
+        this.initObstacle = new Obstacle(this, game.config.width/3, 542, 'obstacle').
+        setScale(1, 4).setOrigin(0.5, 1);
         this.add.existing(this.initObstacle);
 
         // set the collision property of player on floor and roof
