@@ -7,6 +7,8 @@ class Play extends Phaser.Scene {
         // load the necessary images and tile sprites
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
+        this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
+        
     
     }
 
@@ -15,7 +17,7 @@ class Play extends Phaser.Scene {
         var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width/2, 400, 'pixel_guy');
+        this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         this.player.setVelocityY(-300);
         this.player.setGravityY(500);
 

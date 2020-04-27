@@ -7,12 +7,13 @@ class Title extends Phaser.Scene {
         // load the necessary images and tile sprites
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
+        this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
     
     }
 
     create() {
 
-        this.player = this.physics.add.sprite(game.config.width/2, 400, 'pixel_guy');
+        this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         this.player.setGravityY(0);
 
         // spawn the floor and set it immovable
