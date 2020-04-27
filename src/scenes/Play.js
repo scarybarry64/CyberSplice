@@ -36,11 +36,18 @@ class Play extends Phaser.Scene {
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
 
+        this.isSlamming = false; //keeps track of if player is ground slamming
+
     }
 
     //Jump function
     jump() {
         this.player.setVelocityY(-500);
+    }
+
+    // Ground slam function
+    groundSlam() {
+        this.player.setVelocityY(500);
     }
 
     update() {
@@ -50,14 +57,20 @@ class Play extends Phaser.Scene {
             this.jump();
         }
 
+        if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+            this.isSlamming = true;
+            this.player.angle = 0;
+            this.groundSlam();
+        }
+
         // Spin the player whilst in the air
-        if(!this.player.body.touching.down) {
+        if(!this.player.body.touching.down && !this.isSlamming) {
             this.player.angle += 10;
         }
 
         // reset the player angle when back on the ground
         if(this.player.body.touching.down) {
-            this.player.angle = 0;
+            this.isSlamming = false;
         }
     }    
 }
