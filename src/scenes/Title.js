@@ -28,8 +28,8 @@ class Title extends Phaser.Scene {
         roof.setImmovable();
 
         // spawn first obstacle
-        let initObstacle = this.physics.add.sprite(game.config.width/3, 480, 'obstacle').
-            setScale(1, 4);
+        let initObstacle = this.physics.add.sprite(game.config.width/3, 542, 'obstacle').
+            setScale(1, 4).setOrigin(0.5, 1);
 
         // placeholder title screen text
         this.add.text(centerX, centerY-50, 'G2P1 Endless Runner', {
