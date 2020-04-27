@@ -60,17 +60,15 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
 
-        // set up cursor keys
+        // set up cursor keys / controls
         controls = this.input.keyboard.createCursorKeys();
+        this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         // BOOLEAN VARS
         this.isSlamming = false; //keeps track of if player is ground slamming
         this.isGameOver = false; //keeps track of if game should go to game over scene
 
-    }
-
-    spawnObstacles() {
-        
     }
 
     // Jump function
@@ -108,6 +106,17 @@ class Play extends Phaser.Scene {
             this.isSlamming = true;
             this.player.angle = 0;
             this.groundSlam();
+        }
+
+        // move player to the left
+        if(this.keyLeft.isDown) {
+            console.log('LEFT');
+            this.player.setVelocityX(-25);
+        }
+        // move player to the right
+        if(this.keyRight.isDown) {
+            console.log('RIGHT');
+            this.player.setVelocityX(25);
         }
 
         // Spin the player whilst in the air
