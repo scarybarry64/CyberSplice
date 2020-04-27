@@ -20,6 +20,10 @@ let config = {
 // define game
 let game = new Phaser.Game(config);
 
+game.settings = {
+    scrollSpeed: -150, // negative number to look like scrolling left
+}
+
 // define globals
 let centerX = game.config.width/2;
 let centerY = game.config.height/2;
