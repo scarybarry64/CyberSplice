@@ -24,7 +24,7 @@ class GameOver extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
-        // placeholder title screen
+        // placeholder game over text
         this.add.text(centerX, centerY-50, 'GAME OVER', {
             fontFamily: 'Helvetica', fontSize: '48px', color: '#FACADE'
         }).setOrigin(0.5);
