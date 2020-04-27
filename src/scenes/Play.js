@@ -47,7 +47,7 @@ class Play extends Phaser.Scene {
 
     // Ground slam function
     groundSlam() {
-        this.player.setVelocityY(500);
+        this.player.setVelocityY(850);
     }
 
     update() {
@@ -70,7 +70,12 @@ class Play extends Phaser.Scene {
 
         // reset the player angle when back on the ground
         if(this.player.body.touching.down) {
-            this.isSlamming = false;
+            this.player.angle = 0;
+            if(this.isSlamming) {
+                // shake the camera duration and intensity
+                this.cameras.main.shake(50, 0.005);
+                this.isSlamming = false;
+            }
         }
     }    
 }
