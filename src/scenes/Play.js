@@ -84,12 +84,10 @@ class Play extends Phaser.Scene {
 
     // This makes it possible to hold your jump to increase height
     holdJump() {
-        console.log(this.player.y);
         // only allow the player to jump 100 units above the 
         // height at which the jump was made
-        if(this.player.y > this.jumpStartHeight - 100) {
-            console.log("HOLDIN");
-            this.player.setGravityY(-1000);
+        if(this.player.y > this.jumpStartHeight - 65) {
+            this.player.setGravityY(-1500);
         } else {
             // else reset the gravity to pull the player to the ground
             this.player.setGravityY(1000);
@@ -136,7 +134,7 @@ class Play extends Phaser.Scene {
             this.holdJump();
         }
 
-        // Just let go of jump key and gravity returns to normal
+        // Let go of jump key and gravity returns to normal
         if (Phaser.Input.Keyboard.JustUp(controls.up)) {
             this.canHoldJump = false;
             this.currGravity = 1000;
@@ -188,7 +186,6 @@ class Play extends Phaser.Scene {
 
         //check if out of bounds to the left
         if(this.player.x < 148 && !this.isGameOver) {
-            console.log("GAME OVA");
             this.isGameOver = true;
             this.scene.start('gameOver');
         }   
