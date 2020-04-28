@@ -22,6 +22,7 @@ let game = new Phaser.Game(config);
 
 game.settings = {
     scrollSpeed: -200, // negative number to look like scrolling left
+    isStuck: false,
 }
 
 // define globals
