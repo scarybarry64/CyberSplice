@@ -11,14 +11,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // define key codes
-        var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
-        game.settings.gamePlayer = this.player;
-        this.player.setVelocityY(-300);
-        this.player.setGravityY(1000);
+        this.player.setVelocityY(-300); // initial jump off title screen platform
+        this.player.setGravityY(1000); // default gravity
 
         // spawn the floor and set it immovable
         let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds').
@@ -32,28 +29,28 @@ class Play extends Phaser.Scene {
 
         // spawn initial floor obstacle that appears in title screen
         this.Obstacle1 = new Obstacle(this, game.config.width/3, 542, 'obstacle').
-        setScale(1, 4).setOrigin(0.5, 1);
-        this.add.existing(this.Obstacle1);
+        setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle1); //add to display list
 
         //spawn second floor obstacle
         this.Obstacle2 = new Obstacle(this, game.config.width - 290, 542, 'obstacle').
-        setScale(2, 2).setOrigin(0.5, 1);
-        this.add.existing(this.Obstacle2);
+        setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle2); //add to display list
 
         //spawn third floor obstacle
         this.Obstacle3 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
-        this.add.existing(this.Obstacle3);
+        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle3); //add to display list
 
         //spawn fourth floor obstacle
         this.Obstacle4 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
-        this.add.existing(this.Obstacle4);
+        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
         this.roofObstacle1 = new RoofObstacle(this, game.config.width - 290, 90, 'obstacle').
-        setScale(1, 4).setOrigin(0.5, 0);
-        this.add.existing(this.Obstacle1);
+        setScale(1, 4).setOrigin(0.5, 0); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle1); //add to display list
 
         // set the collision property of player on objects
         this.physics.add.collider(this.player, floor);
@@ -82,20 +79,19 @@ class Play extends Phaser.Scene {
         this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        // BOOLEAN VARS
+        // BOOLEAN VARIABLES
         this.isSlamming = false; // keeps track of if player is ground slamming
-        this.isDashing = false; // Only used if left right control is turned on
         this.isGameOver = false; // keeps track of if game should go to game over scene'
         this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
         game.settings.isStuck = false; //reset the global isStuck variable
 
-        // INTEGER VARS
-        this.jumpStartHeight = 0;
-        game.settings.scrollSpeed = -200;
+        // INTEGER VARIABLES
+        this.jumpStartHeight = 0; // used to calculate relative max jump height
+        game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
 
     }
-
 
     // Initial Jump made from object, -300 is the smallest possible jump height
     startJump() {
@@ -107,11 +103,11 @@ class Play extends Phaser.Scene {
         // only allow the player to jump 100 units above the 
         // height at which the jump was made
         if(this.player.y > this.jumpStartHeight - 65) {
-            this.player.setGravityY(-1500);
+            this.player.setGravityY(-1500); //negative gravity simulates extending a jump
         } else {
             // else reset the gravity to pull the player to the ground
             this.player.setGravityY(1000);
-            this.canHoldJump = false;
+            this.canHoldJump = false; // disables double jump
         }
     }
 
@@ -170,24 +166,6 @@ class Play extends Phaser.Scene {
                 this.player.angle = 0;
                 this.groundSlam();
             }
-    
-
-            /* ******* LEFT / RIGHT ********
-            // move player to the left
-            if(this.keyLeft.isDown && !this.player.body.touching.down
-                && !this.isDashing) {
-                console.log('LEFT');
-                this.player.setVelocityX(-50);
-                this.isDashing = true;
-            }
-            // move player to the right
-            if(this.keyRight.isDown && !this.player.body.touching.down
-                    && !this.isDashing) {
-                console.log('RIGHT');
-                this.player.setVelocityX(50);
-                this.isDashing = true;
-            }
-            */
 
             // Spin the player whilst in the air
             if(!this.player.body.touching.down && !this.isSlamming) {
@@ -197,7 +175,6 @@ class Play extends Phaser.Scene {
             // reset the player angle when back on the ground
             if(this.player.body.touching.down) {
                 this.player.angle = 0;
-                this.isDashing = false;
                 this.player.setVelocityX(0);
                 if(this.isSlamming) {
                     // shake the camera (duration, intensity)
