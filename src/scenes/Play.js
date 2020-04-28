@@ -38,18 +38,18 @@ class Play extends Phaser.Scene {
         this.add.existing(this.Obstacle1);
 
         //spawn second obstacle
-        this.Obstacle2 = new Obstacle(this, game.config.width, 542, 'obstacle').
+        this.Obstacle2 = new Obstacle(this, game.config.width - 290, 542, 'obstacle').
         setScale(2, 2).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle2);
 
         //spawn third obstacle
         this.Obstacle3 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
-        setScale(3, 1).setOrigin(0.5, 1);
+        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle3);
 
         //spawn fourth obstacle
         this.Obstacle4 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
-        setScale(3, 1).setOrigin(0.5, 1);
+        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle4);
 
         // set the collision property of player on objects
