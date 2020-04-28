@@ -8,6 +8,7 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
         this.setFrictionX(0); // makes the player character slide on top
         this.scene.physics.world.enableBody(this, 0);
         scene.add.existing(this);
+        this.visible = false;
     }
 
     // Generate random number for height of obstacle
@@ -34,6 +35,13 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
         // when obstacle exits left side of screen
         if (this.x <= 0 - this.width) {
             this.reset();
+        }
+
+        if (!this.visible){
+            this.alpha = 0;
+        }
+        else{
+            this.alpha = 1;
         }
     }
 

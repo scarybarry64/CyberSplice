@@ -36,6 +36,13 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
         if (this.x <= 0 - this.width) {
             this.reset();
         }
+
+        if (!this.visible){
+            this.alpha = 0;
+        }
+        else{
+            this.alpha = 1;
+        }
     }
 
     // reset the obstacle to the right of the screen
