@@ -20,7 +20,7 @@ class Play extends Phaser.Scene {
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         game.settings.gamePlayer = this.player;
         this.player.setVelocityY(-300);
-        this.player.setGravityY(500);
+        this.player.setGravityY(1000);
 
         // spawn the floor and set it immovable
         let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds').
@@ -62,19 +62,34 @@ class Play extends Phaser.Scene {
 
         // set up cursor keys / controls
         controls = this.input.keyboard.createCursorKeys();
+        this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         // BOOLEAN VARS
         this.isSlamming = false; //keeps track of if player is ground slamming
         this.isDashing = false;
-        this.isGameOver = false; //keeps track of if game should go to game over scene
+        this.isGameOver = false; //keeps track of if game should go to game over scene'
+
+        // INTEGER VARS
+        this.jumpTimer = 0;
+        this.initGravity = 1000;
+        this.currGravity = 1000;
+        this.subtractor = 500;
 
     }
 
     // Jump function
-    jump() {
-        this.player.setVelocityY(-500);
+    startJump() {
+        // this.timer = this.time.addEvent({ delay: 100, callback: this.tick, callbackScope: this, loop: true});
+        this.player.setVelocityY(-300);
+    }
+
+    testJump() {
+        console.log(this.currGavity);
+        this.player.setGravityY(-1000);
+        // this.currGravity -= this.subtractor - (this.subtractor * .5);
+        // this.player.setGravityY(this.currGravity);
     }
 
     // Ground slam function
@@ -95,11 +110,27 @@ class Play extends Phaser.Scene {
         this.Obstacle3.update();
         this.Obstacle4.update();
 
+        // Keep the player from flying off the screen when coming
+        // in contact with an obstacle while in the air
+        if (this.player.body.velocity.x != 0) {
+            this.player.setVelocityX(0);
+        }
+
+        
         // jump functionality, single jump only
         if (Phaser.Input.Keyboard.JustDown(controls.up) && 
             this.player.body.touching.down) {
-            this.jump();
+            this.startJump();
         }
+
+        if (this.keyUp.isDown) {
+            this.testJump();
+        }
+
+        if (Phaser.Input.Keyboard.JustUp(controls.up)) {
+                this.currGravity = 1000;
+                this.player.setGravityY(1000);
+            }
 
         // ground slam functionality
         if (Phaser.Input.Keyboard.JustDown(controls.down) && 
@@ -109,6 +140,7 @@ class Play extends Phaser.Scene {
             this.groundSlam();
         }
 
+        /* ******* LEFT / RIGHT ********
         // move player to the left
         if(this.keyLeft.isDown && !this.player.body.touching.down
             && !this.isDashing) {
@@ -123,6 +155,7 @@ class Play extends Phaser.Scene {
             this.player.setVelocityX(50);
             this.isDashing = true;
         }
+        */
 
         // Spin the player whilst in the air
         if(!this.player.body.touching.down && !this.isSlamming) {
