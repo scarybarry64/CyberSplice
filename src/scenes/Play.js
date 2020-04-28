@@ -8,14 +8,12 @@ class Play extends Phaser.Scene {
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
-        
-    
     }
 
     create() {
         // define key codes
         var spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        
+
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         game.settings.gamePlayer = this.player;
@@ -65,13 +63,18 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.Obstacle2);
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
+        
         // roof obstacles collision
-        this.physics.add.collider(this.player, this.roofObstacle1, function hittewa(player, RoofObstacle) {
-            game.settings.isStuck = true;
-            player.angle = 0;
-            player.setVelocityY = 0;
-            game.settings.scrollSpeed = -50;
-            console.log("HITTEWA")
+        this.physics.add.collider(this.player, this.roofObstacle1, function(player, RoofObstacle) {
+            // Only get stuck if collision is on the left side of the roof obstacle
+            if (player.body.touching.right && RoofObstacle.body.touching.left) {
+                game.settings.isStuck = true; //set the global var true
+                player.angle = 0; // set player sprite upright
+                player.setGravityY(0); // kill gravity
+                player.body.velocity.y = 0; // neutralize vertical movement
+                player.body.velocity.x = 0 // neutralize horizontal movement
+                game.settings.scrollSpeed = -50; // slo-mo scroll speed
+            }
         });
 
         // set up cursor keys / controls
@@ -85,9 +88,11 @@ class Play extends Phaser.Scene {
         this.isDashing = false; // Only used if left right control is turned on
         this.isGameOver = false; // keeps track of if game should go to game over scene'
         this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
+        game.settings.isStuck = false; //reset the global isStuck variable
 
         // INTEGER VARS
         this.jumpStartHeight = 0;
+        game.settings.scrollSpeed = -200;
 
     }
 
@@ -133,8 +138,6 @@ class Play extends Phaser.Scene {
         if (this.player.body.velocity.x != 0) {
             this.player.setVelocityX(0);
         }
-       
-        // if(game.settings.isStuck) {}
 
     //JUMP ---
         if(!game.settings.isStuck){
