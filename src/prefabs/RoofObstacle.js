@@ -41,5 +41,6 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
     reset() {
         this.x = game.config.width + this.getRandomX(); //position of right side of screen
         this.setScale(this.getRandomNumX(), this.getRandomNumY()); // randomize the size (6.5 is current height of jump)
+        this.setScale(3, 6);
     }
 }
