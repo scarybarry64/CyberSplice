@@ -65,8 +65,14 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.Obstacle2);
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
-        //roof obstacles collision
-        this.physics.add.collider(this.player, this.roofObstacle1);
+        // roof obstacles collision
+        this.physics.add.collider(this.player, this.roofObstacle1, function hittewa(player, RoofObstacle) {
+            game.settings.isStuck = true;
+            player.angle = 0;
+            player.setVelocityY = 0;
+            game.settings.scrollSpeed = -50;
+            console.log("HITTEWA")
+        });
 
         // set up cursor keys / controls
         controls = this.input.keyboard.createCursorKeys();
@@ -84,6 +90,7 @@ class Play extends Phaser.Scene {
         this.jumpStartHeight = 0;
 
     }
+
 
     // Initial Jump made from object, -300 is the smallest possible jump height
     startJump() {
@@ -108,13 +115,9 @@ class Play extends Phaser.Scene {
         this.player.setVelocityY(850);
     }
 
-    // Randomize the size of the obstacle
-    spawnObstacle() {
-
-    }
-
     // ** UPDATE FUNCTION **
     update() {
+        console.log(this.player.y);
 
         // Update floor obstacles
         this.Obstacle1.update();
@@ -130,68 +133,74 @@ class Play extends Phaser.Scene {
         if (this.player.body.velocity.x != 0) {
             this.player.setVelocityX(0);
         }
+       
+        // if(game.settings.isStuck) {}
 
     //JUMP ---
-        // Jump functionality, single jump only
-        if (Phaser.Input.Keyboard.JustDown(controls.up) && 
-                this.player.body.touching.down) {
-            this.jumpStartHeight = this.player.y;
-            this.canHoldJump = true;
-            this.startJump();
-        }
+        if(!game.settings.isStuck){
+            // Jump functionality, single jump only
+            if (Phaser.Input.Keyboard.JustDown(controls.up) && 
+                    this.player.body.touching.down) {
+                this.jumpStartHeight = this.player.y;
+                this.canHoldJump = true;
+                this.startJump();
+            }
 
-        // this causes the players jump to be longer if held down
-        if (this.keyUp.isDown && this.canHoldJump) {
-            this.holdJump();
-        }
+            // this causes the players jump to be longer if held down
+            if (this.keyUp.isDown && this.canHoldJump) {
+                this.holdJump();
+            }
 
-        // Let go of jump key and gravity returns to normal
-        if (Phaser.Input.Keyboard.JustUp(controls.up)) {
-            this.canHoldJump = false;
-            this.currGravity = 1000;
-            this.player.setGravityY(1000);
-        }
+            // Let go of jump key and gravity returns to normal
+            if (Phaser.Input.Keyboard.JustUp(controls.up)) {
+                this.canHoldJump = false;
+                this.currGravity = 1000;
+                this.player.setGravityY(1000);
+            }
+    
     //END JUMP ---
 
-        // ground slam functionality
-        if (Phaser.Input.Keyboard.JustDown(controls.down) && 
-        !this.player.body.touching.down) {
-            this.isSlamming = true;
-            this.player.angle = 0;
-            this.groundSlam();
-        }
+            // ground slam functionality
+            if (Phaser.Input.Keyboard.JustDown(controls.down) && 
+                    !this.player.body.touching.down) {
+                this.isSlamming = true;
+                this.player.angle = 0;
+                this.groundSlam();
+            }
+    
 
-        /* ******* LEFT / RIGHT ********
-        // move player to the left
-        if(this.keyLeft.isDown && !this.player.body.touching.down
-            && !this.isDashing) {
-            console.log('LEFT');
-            this.player.setVelocityX(-50);
-            this.isDashing = true;
-        }
-        // move player to the right
-        if(this.keyRight.isDown && !this.player.body.touching.down
-            && !this.isDashing) {
-            console.log('RIGHT');
-            this.player.setVelocityX(50);
-            this.isDashing = true;
-        }
-        */
+            /* ******* LEFT / RIGHT ********
+            // move player to the left
+            if(this.keyLeft.isDown && !this.player.body.touching.down
+                && !this.isDashing) {
+                console.log('LEFT');
+                this.player.setVelocityX(-50);
+                this.isDashing = true;
+            }
+            // move player to the right
+            if(this.keyRight.isDown && !this.player.body.touching.down
+                    && !this.isDashing) {
+                console.log('RIGHT');
+                this.player.setVelocityX(50);
+                this.isDashing = true;
+            }
+            */
 
-        // Spin the player whilst in the air
-        if(!this.player.body.touching.down && !this.isSlamming) {
-            this.player.angle += 10;
-        }
+            // Spin the player whilst in the air
+            if(!this.player.body.touching.down && !this.isSlamming) {
+                this.player.angle += 10;
+            }
 
-        // reset the player angle when back on the ground
-        if(this.player.body.touching.down) {
-            this.player.angle = 0;
-            this.isDashing = false;
-            this.player.setVelocityX(0);
-            if(this.isSlamming) {
-                // shake the camera (duration, intensity)
-                this.cameras.main.shake(50, 0.005);
-                this.isSlamming = false;   
+            // reset the player angle when back on the ground
+            if(this.player.body.touching.down) {
+                this.player.angle = 0;
+                this.isDashing = false;
+                this.player.setVelocityX(0);
+                if(this.isSlamming) {
+                    // shake the camera (duration, intensity)
+                    this.cameras.main.shake(50, 0.005);
+                    this.isSlamming = false;   
+                }
             }
         }
 
