@@ -67,15 +67,17 @@ class Play extends Phaser.Scene {
         this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         // BOOLEAN VARS
-        this.isSlamming = false; //keeps track of if player is ground slamming
-        this.isDashing = false;
-        this.isGameOver = false; //keeps track of if game should go to game over scene'
+        this.isSlamming = false; // keeps track of if player is ground slamming
+        this.isDashing = false; // Only used if left right control is turned on
+        this.isGameOver = false; // keeps track of if game should go to game over scene'
+        this.canHoldJump = true; // keeps track of if player can continue to gain height in their jump
 
         // INTEGER VARS
         this.jumpTimer = 0;
         this.initGravity = 1000;
         this.currGravity = 1000;
         this.subtractor = 500;
+        this.jumpStartHeight = 0;
 
     }
 
@@ -85,11 +87,9 @@ class Play extends Phaser.Scene {
         this.player.setVelocityY(-300);
     }
 
-    testJump() {
-        console.log(this.currGavity);
+    holdJump() {
+        console.log("HOLDIN");
         this.player.setGravityY(-1000);
-        // this.currGravity -= this.subtractor - (this.subtractor * .5);
-        // this.player.setGravityY(this.currGravity);
     }
 
     // Ground slam function
@@ -103,6 +103,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        console.log("canHoldJump is: " + this.canHoldJump);
 
         // Update the Obstacles
         this.Obstacle1.update();
@@ -120,17 +121,21 @@ class Play extends Phaser.Scene {
         // jump functionality, single jump only
         if (Phaser.Input.Keyboard.JustDown(controls.up) && 
             this.player.body.touching.down) {
+                this.canHoldJump = true;
             this.startJump();
         }
 
-        if (this.keyUp.isDown) {
-            this.testJump();
+        // this causes the players jump to be longer if held down
+        if (this.keyUp.isDown && this.canHoldJump) {
+            this.holdJump();
         }
 
+        // Just let go of jump key and gravity returns to normal
         if (Phaser.Input.Keyboard.JustUp(controls.up)) {
-                this.currGravity = 1000;
-                this.player.setGravityY(1000);
-            }
+            this.canHoldJump = false;
+            this.currGravity = 1000;
+            this.player.setGravityY(1000);
+        }
 
         // ground slam functionality
         if (Phaser.Input.Keyboard.JustDown(controls.down) && 
