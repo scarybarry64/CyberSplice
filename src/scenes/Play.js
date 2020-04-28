@@ -70,26 +70,31 @@ class Play extends Phaser.Scene {
         this.isSlamming = false; // keeps track of if player is ground slamming
         this.isDashing = false; // Only used if left right control is turned on
         this.isGameOver = false; // keeps track of if game should go to game over scene'
-        this.canHoldJump = true; // keeps track of if player can continue to gain height in their jump
+        this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
 
         // INTEGER VARS
-        this.jumpTimer = 0;
-        this.initGravity = 1000;
-        this.currGravity = 1000;
-        this.subtractor = 500;
         this.jumpStartHeight = 0;
 
     }
 
-    // Jump function
+    // Initial Jump made from object, -300 is the smallest possible jump height
     startJump() {
-        // this.timer = this.time.addEvent({ delay: 100, callback: this.tick, callbackScope: this, loop: true});
         this.player.setVelocityY(-300);
     }
 
+    // This makes it possible to hold your jump to increase height
     holdJump() {
-        console.log("HOLDIN");
-        this.player.setGravityY(-1000);
+        console.log(this.player.y);
+        // only allow the player to jump 100 units above the 
+        // height at which the jump was made
+        if(this.player.y > this.jumpStartHeight - 100) {
+            console.log("HOLDIN");
+            this.player.setGravityY(-1000);
+        } else {
+            // else reset the gravity to pull the player to the ground
+            this.player.setGravityY(1000);
+            this.canHoldJump = false;
+        }
     }
 
     // Ground slam function
@@ -102,8 +107,8 @@ class Play extends Phaser.Scene {
 
     }
 
+    // ** UPDATE FUNCTION **
     update() {
-        console.log("canHoldJump is: " + this.canHoldJump);
 
         // Update the Obstacles
         this.Obstacle1.update();
@@ -117,11 +122,12 @@ class Play extends Phaser.Scene {
             this.player.setVelocityX(0);
         }
 
-        
-        // jump functionality, single jump only
+    //JUMP ---
+        // Jump functionality, single jump only
         if (Phaser.Input.Keyboard.JustDown(controls.up) && 
-            this.player.body.touching.down) {
-                this.canHoldJump = true;
+                this.player.body.touching.down) {
+            this.jumpStartHeight = this.player.y;
+            this.canHoldJump = true;
             this.startJump();
         }
 
@@ -136,6 +142,7 @@ class Play extends Phaser.Scene {
             this.currGravity = 1000;
             this.player.setGravityY(1000);
         }
+    //END JUMP ---
 
         // ground slam functionality
         if (Phaser.Input.Keyboard.JustDown(controls.down) && 
@@ -173,7 +180,7 @@ class Play extends Phaser.Scene {
             this.isDashing = false;
             this.player.setVelocityX(0);
             if(this.isSlamming) {
-                // shake the camera duration and intensity
+                // shake the camera (duration, intensity)
                 this.cameras.main.shake(50, 0.005);
                 this.isSlamming = false;   
             }
