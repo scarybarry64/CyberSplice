@@ -39,9 +39,7 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
 
     // reset the obstacle to the right of the screen
     reset() {
-        console.log(this.getRandomNumY());
         this.x = game.config.width + this.getRandomX(); //position of right side of screen
         this.setScale(this.getRandomNumX(), this.getRandomNumY()); // randomize the size (6.5 is current height of jump)
-        
     }
 }
