@@ -185,7 +185,7 @@ class Play extends Phaser.Scene {
         }
 
         //check if out of bounds to the left
-        if(this.player.x < 148 && !this.isGameOver) {
+        if(this.player.x < -10 && !this.isGameOver) {
             this.isGameOver = true;
             this.scene.start('gameOver');
         }   
