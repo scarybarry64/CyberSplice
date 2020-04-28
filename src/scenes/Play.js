@@ -32,33 +32,41 @@ class Play extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
-        // spawn initial obstacle that appears in title screen
+        // spawn initial floor obstacle that appears in title screen
         this.Obstacle1 = new Obstacle(this, game.config.width/3, 542, 'obstacle').
         setScale(1, 4).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle1);
 
-        //spawn second obstacle
+        //spawn second floor obstacle
         this.Obstacle2 = new Obstacle(this, game.config.width - 290, 542, 'obstacle').
         setScale(2, 2).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle2);
 
-        //spawn third obstacle
+        //spawn third floor obstacle
         this.Obstacle3 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle3);
 
-        //spawn fourth obstacle
+        //spawn fourth floor obstacle
         this.Obstacle4 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1);
         this.add.existing(this.Obstacle4);
 
+        // spawn initial roof obstacle that appears in title screen
+        this.roofObstacle1 = new RoofObstacle(this, game.config.width - 290, 90, 'obstacle').
+        setScale(1, 4).setOrigin(0.5, 0);
+        this.add.existing(this.Obstacle1);
+
         // set the collision property of player on objects
         this.physics.add.collider(this.player, floor);
         this.physics.add.collider(this.player, roof);
+        // floor obstacles collision 
         this.physics.add.collider(this.player, this.Obstacle1);
         this.physics.add.collider(this.player, this.Obstacle2);
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
+        //roof obstacles collision
+        this.physics.add.collider(this.player, this.roofObstacle1);
 
         // set up cursor keys / controls
         controls = this.input.keyboard.createCursorKeys();
@@ -108,11 +116,14 @@ class Play extends Phaser.Scene {
     // ** UPDATE FUNCTION **
     update() {
 
-        // Update the Obstacles
+        // Update floor obstacles
         this.Obstacle1.update();
         this.Obstacle2.update();
         this.Obstacle3.update();
         this.Obstacle4.update();
+
+        // Update roof obstacles
+        this.roofObstacle1.update();
 
         // Keep the player from flying off the screen when coming
         // in contact with an obstacle while in the air
