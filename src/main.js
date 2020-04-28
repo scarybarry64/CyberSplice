@@ -14,11 +14,16 @@ let config = {
         }
     },
     //backgroundColor: "FFFFFF",
-    scene: [Title, Play],
+    scene: [Title, Play, GameOver],
 };
 
 // define game
 let game = new Phaser.Game(config);
+
+game.settings = {
+    scrollSpeed: -200, // negative number to look like scrolling left
+    isStuck: false,
+}
 
 // define globals
 let centerX = game.config.width/2;
