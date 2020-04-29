@@ -71,6 +71,7 @@ class Play extends Phaser.Scene {
                 player.body.velocity.y = 0; // neutralize vertical movement
                 player.body.velocity.x = 0 // neutralize horizontal movement
                 game.settings.scrollSpeed = -50; // slo-mo scroll speed
+                game.settings.collidedRoof = RoofObstacle; // save the obstacle stuck to as a global var
             }
         });
 
@@ -86,10 +87,14 @@ class Play extends Phaser.Scene {
         this.isGameOver = false; // keeps track of if game should go to game over scene'
         this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
         game.settings.isStuck = false; //reset the global isStuck variable
+        this.allowedToLeft = true;
+        this.allowedToRight = true;
 
         // INTEGER VARIABLES
         this.jumpStartHeight = 0; // used to calculate relative max jump height
         game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
+        this.lefts = 0;
+        this.rights = 0;
 
     }
 
@@ -191,8 +196,31 @@ class Play extends Phaser.Scene {
         
         // Fire code when stuck to roof obstacle
         if(game.settings.isStuck) {
-            console.log("HERRO");
-            
+            // can and does press left arrow key
+            if(this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+                this.allowedToLeft = false;
+                this.lefts++;
+                console.log("LEFTS: " + this.lefts);
+                this.allowedToRight = true;
+            }
+            // can and does press right arrow key
+            else if(this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+                this.allowedToRight = false;
+                this.rights++;
+                console.log("RIGHTS: " + this.rights);
+                this.allowedToLeft = true;
+            }
+
+            // unstick the player
+            if(this.lefts >= 15 && this.rights >= 15 && game.settings.isStuck) {
+                console.log("UNSTUCK! and: " + game.settings.isStuck);
+                this.player.setGravityY(1000); // reset the gravity
+                game.settings.scrollSpeed = -200; // reset the scroll speed
+                game.settings.collidedRoof.reset(); // reset the roof obstacle to right of screen
+                this.lefts = 0; // reset left cursor count
+                this.rights = 0; // reset right cursor count
+                game.settings.isStuck = false;
+            }
         }
     }    
 }
