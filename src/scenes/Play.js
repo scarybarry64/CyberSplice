@@ -8,8 +8,11 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('arrow_left', 'assets/sprites/arrow_left.png', {
             frameWidth: 32, frameHeight: 32, endFrame: 2});
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
+        this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
+        this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
+        this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         
     }
 
@@ -30,46 +33,46 @@ class Play extends Phaser.Scene {
 
         
         // create the roof obstacle particles
-        this.particles = this.add.particles('obstacle');
+        this.particles = this.add.particles('obstacle_terminal');
 
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy');
+        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
         this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
 
         // spawn the floor and set it immovable
-        let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds').
+        let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds_terminal').
             setScale(4, 0.5);
         floor.setImmovable();
 
         // spawn the roof and set it immovable
-        let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds').
+        let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds_terminal').
             setScale(4, 0.5);
         roof.setImmovable();
 
         // spawn initial floor obstacle that appears in title screen
-        this.Obstacle1 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
+        this.Obstacle1 = new Obstacle(this, game.config.width + 200, 542, 'obstacle_terminal').
         setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         //spawn second floor obstacle
-        this.Obstacle2 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
+        this.Obstacle2 = new Obstacle(this, game.config.width + 400, 542, 'obstacle_terminal').
         setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle2); //add to display list
 
         //spawn third floor obstacle
-        this.Obstacle3 = new Obstacle(this, game.config.width + 600, 542, 'obstacle').
+        this.Obstacle3 = new Obstacle(this, game.config.width + 600, 542, 'obstacle_terminal').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle3); //add to display list
 
         //spawn fourth floor obstacle
-        this.Obstacle4 = new Obstacle(this, game.config.width + 800, 542, 'obstacle').
+        this.Obstacle4 = new Obstacle(this, game.config.width + 800, 542, 'obstacle_terminal').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
-        this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle').
+        this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle_terminal').
         setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 

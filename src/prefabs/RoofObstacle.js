@@ -8,7 +8,7 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
         this.setFrictionX(0); // makes the player character slide on top
         this.scene.physics.world.enableBody(this, 0);
         scene.add.existing(this);
-        this.visible = false;
+        this.visible = true;
     }
 
     // Generate random number for height of obstacle
