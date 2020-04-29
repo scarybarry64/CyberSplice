@@ -22,8 +22,9 @@ let game = new Phaser.Game(config);
 
 game.settings = {
     scrollSpeed: -200, // negative number to look like scrolling left
-    isStuck: false,
-    collidedRoof: 0,
+    isStuck: false, // if the player is stuck to a roof obstacle or not
+    collidedRoof: 0, // used to keep track of the roof obstacle the player is stuck to
+    visionEnabled: 0, // if the vision mechanic is enabled
 }
 
 // define globals

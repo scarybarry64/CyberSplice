@@ -11,6 +11,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // var particles;
+        this.particles = this.add.particles('obstacle');
+
 
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy');
@@ -121,6 +124,26 @@ class Play extends Phaser.Scene {
         this.player.setVelocityY(850);
     }
 
+    // Spawn the particles after roof obstacle destroyed
+    spawnParticles() {
+        this.particles.createEmitter({
+            alpha: { start: game.settings.visionEnabled, end: !game.settings.visionEnabled },
+            scale: { start: game.settings.collidedRoof.scale, end: 0 },
+            //tint: { start: 0xff945e, end: 0xff945e },
+            speed: 10,
+            accelerationY: 300,
+            accelerationX: -300,
+            angle: { min: 0, max: 0 },
+            rotate: { min: -180, max: 180 },
+            lifespan: { min: 1000, max: 1100 },
+            blendMode: 'ADD',
+            frequency: 110,
+            maxParticles: 1,
+            x: this.player.x,
+            y: this.player.y - 50,
+        });
+    }
+
     // ** UPDATE FUNCTION **
     update() {
 
@@ -217,6 +240,7 @@ class Play extends Phaser.Scene {
             if(this.lefts >= Phaser.Math.Between(10, 15) 
             && this.rights >= Phaser.Math.Between(10,15) && game.settings.isStuck) {
                 console.log("UNSTUCK! and: " + game.settings.isStuck);
+                this.spawnParticles();
                 this.player.setGravityY(1000); // reset the gravity
                 this.player.setVelocityX(1000);
                 game.settings.scrollSpeed = -200; // reset the scroll speed
