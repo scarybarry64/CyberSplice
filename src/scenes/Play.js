@@ -4,13 +4,34 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        // load the necessary images and tile sprites
+        // load the necessary images and tile 
+        this.load.spritesheet('arrow_left', 'assets/sprites/arrow_left.png', {
+            frameWidth: 32, frameHeight: 32, endFrame: 2});
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
+        
     }
 
     create() {
+        // animation config for left arrow
+        var leftAnimConfig = {
+            key: 'blink_l',
+            frames: this.anims.generateFrameNumbers('arrow_left', { start: 0, end: 1,
+            first: 0 }), frameRate: 12, repeat: -1
+        };
+
+        // animation config for right arrow
+        var rightAnimConfig = {
+            key: 'blink_r',
+            frames: this.anims.generateFrameNumbers('arrow_left', { start: 0, end: 1,
+            first: 0 }), frameRate: 14, repeat: -1
+        };
+
+        
+        // create the roof obstacle particles
+        this.particles = this.add.particles('obstacle');
+
 
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width / 3, 525, 'pixel_guy');
@@ -103,7 +124,30 @@ class Play extends Phaser.Scene {
             color: primaryColor,
         });
 
-        console.log("TEST");
+        //ANIMATION 
+        this.anims.create(leftAnimConfig);
+        this.anims.create(rightAnimConfig);
+
+        // add the left arrow key sprite and set invisible
+        this.blink_left = this.add.sprite(centerX-50, 45, 'blink').setScale(2, 2);
+        this.blink_left.alpha = 0;
+
+        // add the right arrow key sprite, mirror it, and set invisible
+        this.blink_right = this.add.sprite(centerX+50, 45, 'blink').setScale(2, 2);
+        this.blink_right.flipX = true;
+        this.blink_right.alpha = 0;
+
+        // start the animations
+        this.blink_left.anims.play('blink_l');
+        this.blink_right.anims.play('blink_r');
+        
+
+    }
+
+    // reveal the mash buttons anim
+    playAnim() {
+        this.blink_left.alpha = 1;
+        this.blink_right.alpha = 1;
     }
 
     // Initial Jump made from object, -300 is the smallest possible jump height
@@ -127,6 +171,26 @@ class Play extends Phaser.Scene {
     // Ground slam function
     groundSlam() {
         this.player.setVelocityY(850);
+    }
+
+    // Spawn the particles after roof obstacle destroyed
+    spawnParticles() {
+        this.particles.createEmitter({
+            alpha: { start: game.settings.visionEnabled, end: !game.settings.visionEnabled },
+            scale: { start: game.settings.collidedRoof.scale, end: 0 },
+            //tint: { start: 0xff945e, end: 0xff945e },
+            speed: 10,
+            accelerationY: 300,
+            accelerationX: -300,
+            angle: { min: 0, max: 0 },
+            rotate: { min: -180, max: 180 },
+            lifespan: { min: 1000, max: 1100 },
+            blendMode: 'ADD',
+            frequency: 110,
+            maxParticles: 1,
+            x: this.player.x,
+            y: this.player.y - 50,
+        });
     }
 
     // ** UPDATE FUNCTION **
@@ -207,16 +271,23 @@ class Play extends Phaser.Scene {
         }
 
         // Fire code when stuck to roof obstacle
-        if (game.settings.isStuck) {
+        if(game.settings.isStuck) {
+            if(!game.settings.isPlayingAnim) {
+                this.playAnim();
+                game.settings.isPlayingAnim = true;
+            }
+            
             // can and does press left arrow key
-            if (this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+            if(this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+                this.player.x-= 2; // jiggle player left
                 this.allowedToLeft = false;
                 this.lefts++;
                 console.log("LEFTS: " + this.lefts);
                 this.allowedToRight = true;
             }
             // can and does press right arrow key
-            else if (this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+            else if(this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+                this.player.x += 2; // jiggle player right
                 this.allowedToRight = false;
                 this.rights++;
                 console.log("RIGHTS: " + this.rights);
@@ -224,14 +295,21 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if (this.lefts >= 15 && this.rights >= 15 && game.settings.isStuck) {
+            if(this.lefts >= Phaser.Math.Between(10, 15) 
+            && this.rights >= Phaser.Math.Between(10,15) && game.settings.isStuck) {
                 console.log("UNSTUCK! and: " + game.settings.isStuck);
+                game.settings.isPlayingAnim = false;
+                this.blink_left.alpha = 0;
+                this.blink_right.alpha = 0;
+                this.spawnParticles();
                 this.player.setGravityY(1000); // reset the gravity
+                this.player.setVelocityX(1000);
                 game.settings.scrollSpeed = -200; // reset the scroll speed
                 game.settings.collidedRoof.reset(); // reset the roof obstacle to right of screen
                 this.lefts = 0; // reset left cursor count
                 this.rights = 0; // reset right cursor count
                 game.settings.isStuck = false;
+
             }
         }
     }
