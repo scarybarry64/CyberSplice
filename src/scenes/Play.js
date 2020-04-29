@@ -198,6 +198,7 @@ class Play extends Phaser.Scene {
         if(game.settings.isStuck) {
             // can and does press left arrow key
             if(this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+                this.player.x-= 2; // jiggle player left
                 this.allowedToLeft = false;
                 this.lefts++;
                 console.log("LEFTS: " + this.lefts);
@@ -205,6 +206,7 @@ class Play extends Phaser.Scene {
             }
             // can and does press right arrow key
             else if(this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+                this.player.x += 2; // jiggle player right
                 this.allowedToRight = false;
                 this.rights++;
                 console.log("RIGHTS: " + this.rights);
@@ -212,15 +214,18 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if(this.lefts >= 15 && this.rights >= 15 && game.settings.isStuck) {
+            if(this.lefts >= Phaser.Math.Between(10, 15) 
+            && this.rights >= Phaser.Math.Between(10,15) && game.settings.isStuck) {
                 console.log("UNSTUCK! and: " + game.settings.isStuck);
                 this.player.setGravityY(1000); // reset the gravity
+                this.player.setVelocityX(1000);
                 game.settings.scrollSpeed = -200; // reset the scroll speed
                 game.settings.collidedRoof.reset(); // reset the roof obstacle to right of screen
                 this.lefts = 0; // reset left cursor count
                 this.rights = 0; // reset right cursor count
                 game.settings.isStuck = false;
+
             }
         }
-    }    
+    }
 }
