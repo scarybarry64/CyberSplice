@@ -13,43 +13,43 @@ class Play extends Phaser.Scene {
     create() {
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy');
+        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'pixel_guy');
         this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
 
         // spawn the floor and set it immovable
-        let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds').
+        let floor = this.physics.add.sprite(game.config.width / 2, game.config.width / 2 + 110, 'bounds').
             setScale(4, 0.5);
         floor.setImmovable();
 
         // spawn the roof and set it immovable
-        let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds').
+        let roof = this.physics.add.sprite(game.config.width / 2, 40, 'bounds').
             setScale(4, 0.5);
         roof.setImmovable();
 
         // spawn initial floor obstacle that appears in title screen
         this.Obstacle1 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
-        setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         //spawn second floor obstacle
         this.Obstacle2 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
-        setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle2); //add to display list
 
         //spawn third floor obstacle
         this.Obstacle3 = new Obstacle(this, game.config.width + 600, 542, 'obstacle').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle3); //add to display list
 
         //spawn fourth floor obstacle
         this.Obstacle4 = new Obstacle(this, game.config.width + 800, 542, 'obstacle').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
         this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle').
-        setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
+            setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         // set the collision property of player on objects
@@ -60,9 +60,9 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.Obstacle2);
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
-        
+
         // roof obstacles collision
-        this.physics.add.collider(this.player, this.roofObstacle1, function(player, RoofObstacle) {
+        this.physics.add.collider(this.player, this.roofObstacle1, function (player, RoofObstacle) {
             // Only get stuck if collision is on the left side of the roof obstacle
             if (player.body.touching.right && RoofObstacle.body.touching.left) {
                 game.settings.isStuck = true; //set the global var true
@@ -96,6 +96,14 @@ class Play extends Phaser.Scene {
         this.lefts = 0;
         this.rights = 0;
 
+        // TIME DISPLAY
+        this.timeDisplay = this.add.text(game.config.width - 60, 20, 0, {
+            fontFamily: 'Helvetica', 
+            fontSize: '48px', 
+            color: primaryColor,
+        });
+
+        console.log("TEST");
     }
 
     // Initial Jump made from object, -300 is the smallest possible jump height
@@ -107,7 +115,7 @@ class Play extends Phaser.Scene {
     holdJump() {
         // only allow the player to jump 100 units above the 
         // height at which the jump was made
-        if(this.player.y > this.jumpStartHeight - 65) {
+        if (this.player.y > this.jumpStartHeight - 65) {
             this.player.setGravityY(-1500); //negative gravity simulates extending a jump
         } else {
             // else reset the gravity to pull the player to the ground
@@ -124,6 +132,10 @@ class Play extends Phaser.Scene {
     // ** UPDATE FUNCTION **
     update() {
 
+        // Update timer display
+        let timer = Math.floor((this.time.now - initialTime) / 1000);
+        this.timeDisplay.text = timer;
+        
         // Update floor obstacles
         this.Obstacle1.update();
         this.Obstacle2.update();
@@ -139,11 +151,11 @@ class Play extends Phaser.Scene {
             this.player.setVelocityX(0);
         }
 
-    //JUMP ---
-        if(!game.settings.isStuck){
+        //JUMP ---
+        if (!game.settings.isStuck) {
             // Jump functionality, single jump only
-            if (Phaser.Input.Keyboard.JustDown(controls.up) && 
-                    this.player.body.touching.down) {
+            if (Phaser.Input.Keyboard.JustDown(controls.up) &&
+                this.player.body.touching.down) {
                 this.jumpStartHeight = this.player.y;
                 this.canHoldJump = true;
                 this.startJump();
@@ -160,51 +172,51 @@ class Play extends Phaser.Scene {
                 this.currGravity = 1000;
                 this.player.setGravityY(1000);
             }
-    
-    //END JUMP ---
+
+            //END JUMP ---
 
             // ground slam functionality
-            if (Phaser.Input.Keyboard.JustDown(controls.down) && 
-                    !this.player.body.touching.down) {
+            if (Phaser.Input.Keyboard.JustDown(controls.down) &&
+                !this.player.body.touching.down) {
                 this.isSlamming = true;
                 this.player.angle = 0;
                 this.groundSlam();
             }
 
             // Spin the player whilst in the air
-            if(!this.player.body.touching.down && !this.isSlamming) {
+            if (!this.player.body.touching.down && !this.isSlamming) {
                 this.player.angle += 10;
             }
 
             // reset the player angle when back on the ground
-            if(this.player.body.touching.down) {
+            if (this.player.body.touching.down) {
                 this.player.angle = 0;
                 this.player.setVelocityX(0);
-                if(this.isSlamming) {
+                if (this.isSlamming) {
                     // shake the camera (duration, intensity)
                     this.cameras.main.shake(50, 0.005);
-                    this.isSlamming = false;   
+                    this.isSlamming = false;
                 }
             }
         }
 
         //check if out of bounds to the left
-        if(this.player.x < -10 && !this.isGameOver) {
+        if (this.player.x < -10 && !this.isGameOver) {
             this.isGameOver = true;
             this.scene.start('gameOver');
         }
-        
+
         // Fire code when stuck to roof obstacle
-        if(game.settings.isStuck) {
+        if (game.settings.isStuck) {
             // can and does press left arrow key
-            if(this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+            if (this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
                 this.allowedToLeft = false;
                 this.lefts++;
                 console.log("LEFTS: " + this.lefts);
                 this.allowedToRight = true;
             }
             // can and does press right arrow key
-            else if(this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+            else if (this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
                 this.allowedToRight = false;
                 this.rights++;
                 console.log("RIGHTS: " + this.rights);
@@ -212,7 +224,7 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if(this.lefts >= 15 && this.rights >= 15 && game.settings.isStuck) {
+            if (this.lefts >= 15 && this.rights >= 15 && game.settings.isStuck) {
                 console.log("UNSTUCK! and: " + game.settings.isStuck);
                 this.player.setGravityY(1000); // reset the gravity
                 game.settings.scrollSpeed = -200; // reset the scroll speed
@@ -222,5 +234,5 @@ class Play extends Phaser.Scene {
                 game.settings.isStuck = false;
             }
         }
-    }    
+    }
 }

@@ -27,7 +27,9 @@ game.settings = {
 }
 
 // define globals
-let centerX = game.config.width/2;
-let centerY = game.config.height/2;
+let centerX = game.config.width / 2;
+let centerY = game.config.height / 2;
 let controls;
 let paddle = null;
+let primaryColor = '#03C04A';
+let initialTime = 0;
