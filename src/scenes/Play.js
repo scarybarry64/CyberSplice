@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
 
         // spawn initial roof obstacle that appears in title screen
         this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle').
-        setScale(1, 4).setOrigin(0.5, 0); //Origin currently set at base of sprite
+        setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         // set the collision property of player on objects
@@ -118,7 +118,6 @@ class Play extends Phaser.Scene {
 
     // ** UPDATE FUNCTION **
     update() {
-        console.log(this.player.y);
 
         // Update floor obstacles
         this.Obstacle1.update();
@@ -188,6 +187,12 @@ class Play extends Phaser.Scene {
         if(this.player.x < -10 && !this.isGameOver) {
             this.isGameOver = true;
             this.scene.start('gameOver');
-        }   
+        }
+        
+        // Fire code when stuck to roof obstacle
+        if(game.settings.isStuck) {
+            console.log("HERRO");
+            
+        }
     }    
 }
