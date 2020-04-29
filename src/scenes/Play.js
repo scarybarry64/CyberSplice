@@ -199,6 +199,14 @@ class Play extends Phaser.Scene {
         // Update timer display
         let timer = Math.floor((this.time.now - initialTime) / 1000);
         this.timeDisplay.text = timer;
+        if (timer == 10 && !timerFlag) { // aligns timer to right when 2 digits
+            this.timeDisplay.x -= this.timeDisplay.width / 2;
+            timerFlag = true;
+        }
+        else if (timer == 99 && timerFlag) { // aligns when 3 digits
+            this.timeDisplay.x -= this.timeDisplay.width / 3;
+            timerFlag = false;
+        }
         
         // Update floor obstacles
         this.Obstacle1.update();
