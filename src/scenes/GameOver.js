@@ -9,43 +9,26 @@ class GameOver extends Phaser.Scene {
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
-<<<<<<< HEAD
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
     
-=======
-
->>>>>>> a7febf46a90c92474c3370f0aa208a2b21ee8cb0
     }
 
     create() {
 
         // spawn the floor and set it immovable
-<<<<<<< HEAD
         let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds_terminal').
-=======
-        let floor = this.physics.add.sprite(game.config.width / 2, game.config.width / 2 + 110, 'bounds').
->>>>>>> a7febf46a90c92474c3370f0aa208a2b21ee8cb0
             setScale(4, 0.5);
         floor.setImmovable();
 
         // spawn the roof and set it immovable
-<<<<<<< HEAD
         let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds_terminal').
-=======
-        let roof = this.physics.add.sprite(game.config.width / 2, 40, 'bounds').
->>>>>>> a7febf46a90c92474c3370f0aa208a2b21ee8cb0
             setScale(4, 0.5);
         roof.setImmovable();
 
         // placeholder game over text
-<<<<<<< HEAD
         this.add.text(centerX, centerY-50, 'GAME OVER', {
             fontFamily: 'Helvetica', fontSize: '48px', color: '#11ff00'
-=======
-        this.add.text(centerX, centerY - 50, 'GAME OVER', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: '#03C04A'
->>>>>>> a7febf46a90c92474c3370f0aa208a2b21ee8cb0
         }).setOrigin(0.5);
         this.add.text(centerX, centerY, 'Press DOWN ARROW for Main Menu', {
             fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
