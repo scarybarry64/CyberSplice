@@ -13,8 +13,8 @@ class Play extends Phaser.Scene {
     create() {
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
-        this.player.setVelocityY(-300); // initial jump off title screen platform
+        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy');
+        this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
 
         // spawn the floor and set it immovable
