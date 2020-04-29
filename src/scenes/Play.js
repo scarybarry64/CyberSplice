@@ -28,27 +28,27 @@ class Play extends Phaser.Scene {
         roof.setImmovable();
 
         // spawn initial floor obstacle that appears in title screen
-        this.Obstacle1 = new Obstacle(this, game.config.width/3, 542, 'obstacle').
+        this.Obstacle1 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
         setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         //spawn second floor obstacle
-        this.Obstacle2 = new Obstacle(this, game.config.width - 290, 542, 'obstacle').
+        this.Obstacle2 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
         setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle2); //add to display list
 
         //spawn third floor obstacle
-        this.Obstacle3 = new Obstacle(this, game.config.width + 200, 542, 'obstacle').
+        this.Obstacle3 = new Obstacle(this, game.config.width + 600, 542, 'obstacle').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle3); //add to display list
 
         //spawn fourth floor obstacle
-        this.Obstacle4 = new Obstacle(this, game.config.width + 400, 542, 'obstacle').
+        this.Obstacle4 = new Obstacle(this, game.config.width + 800, 542, 'obstacle').
         setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
-        this.roofObstacle1 = new RoofObstacle(this, game.config.width - 290, 90, 'obstacle').
+        this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle').
         setScale(1, 4).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
