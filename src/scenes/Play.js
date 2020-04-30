@@ -173,10 +173,12 @@ class Play extends Phaser.Scene {
         this.rights = 0;
 
         // EYE DISPLAY
-        this.eyeDisplay = this.add.sprite(20, 20, 'eye_closed');
+        this.eyeDisplay = this.add.sprite(30, 44, 'eye_closed');
 
-        // Power variable
+        // Power variable and display bar
         this.power = maxPower;
+        this.powerBar = this.add.rectangle(60, 35, 200, 20, 0x03C04A).setOrigin(0, 0);
+
     }
 
     // reveal the mash buttons anim
@@ -403,13 +405,19 @@ class Play extends Phaser.Scene {
             // Display open eye
             this.eyeDisplay.setTexture('eye_open');
 
-            // Drain power
+            // Drain power and decrease power bar
             this.power -= (drainRate / 60);
+            if (this.power > 0) {
+                this.powerBar.width -= (((200 / maxPower) * drainRate) / 60);
+            }
+            else {
+                this.powerBar.width = 0;
+            }
             console.log("Power is draining: " + this.power);
         }
         else {
 
-            // hide obstacles
+            // Dide obstacles
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
             this.Obstacle3.makeInvisible();
@@ -417,16 +425,22 @@ class Play extends Phaser.Scene {
             this.roofObstacle1.makeInvisible();
             this.roofObstacle2.makeInvisible();
 
-            // eye is closed
+            // Eye is closed
             this.eyeDisplay.setTexture('eye_closed');
 
-            // regen power
+            // Regen power and increase power bar
             if (this.power < maxPower) {
                 this.power += (regenRate / 60);
+                if (this.power > maxPower) {
+                    this.power = maxPower;
+                }
                 console.log("Power is regenerating: " + this.power);
             }
-            else {
-                this.power = maxPower;
+            if (this.powerBar.width < 200) {
+                this.powerBar.width += (((200 / maxPower) * regenRate) / 60);
+                if (this.powerBar.width > 200) {
+                    this.powerBar.width = 200;
+                }
             }
         }
     }
