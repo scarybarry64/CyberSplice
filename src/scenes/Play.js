@@ -122,7 +122,7 @@ class Play extends Phaser.Scene {
 
         // TIME DISPLAY
         this.timeDisplay = this.add.text(game.config.width - 60, 20, 0, {
-            fontFamily: 'Helvetica', 
+            fontFamily: 'Consolas', 
             fontSize: '48px', 
             color: primaryColor,
         });

@@ -28,7 +28,7 @@ class GameOver extends Phaser.Scene {
 
         // placeholder game over text
         this.add.text(centerX, centerY-50, 'GAME OVER', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: '#11ff00'
+            fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
         this.add.text(centerX, centerY, 'Press DOWN ARROW for Main Menu', {
             fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'

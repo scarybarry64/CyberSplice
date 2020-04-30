@@ -46,7 +46,7 @@ class Title extends Phaser.Scene {
 
         // placeholder title screen text
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: '#11ff00'
+            fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
         this.add.text(centerX, centerY + 150, 'UP ARROW to Jump', {
             fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
