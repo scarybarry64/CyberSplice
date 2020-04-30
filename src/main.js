@@ -10,7 +10,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
         }
     },
     //backgroundColor: "FFFFFF",
@@ -22,11 +22,21 @@ let game = new Phaser.Game(config);
 
 game.settings = {
     scrollSpeed: -200, // negative number to look like scrolling left
-    isStuck: false,
+    isStuck: false, // if the player is stuck to a roof obstacle or not
+    collidedRoof: 0, // used to keep track of the roof obstacle the player is stuck to
+    visionEnabled: 0, // if the vision mechanic is enabled
+    isPlayingAnim: false, // if the mash keys anim is playing
+    highScore: 0, // current high score
+    isLocalEnabled: false, // is local storage enabled
+    spawnParticles: false, // check if should spawn particles
+    obstacleToDestroy: 0, // the obstacle to spawn the particles from
 }
 
 // define globals
-let centerX = game.config.width/2;
-let centerY = game.config.height/2;
+let centerX = game.config.width / 2;
+let centerY = game.config.height / 2;
 let controls;
 let paddle = null;
+let primaryColor = '#03C04A';
+let initialTime = 0;
+let timerFlag = false;
