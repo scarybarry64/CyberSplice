@@ -389,6 +389,7 @@ class Play extends Phaser.Scene {
             this.Obstacle3.makeVisible();
             this.Obstacle4.makeVisible();
             this.roofObstacle1.makeVisible();
+            this.roofObstacle2.makeVisible();
 
         }
         else{
@@ -397,6 +398,7 @@ class Play extends Phaser.Scene {
             this.Obstacle3.makeInvisible();
             this.Obstacle4.makeInvisible();
             this.roofObstacle1.makeInvisible();
+            this.roofObstacle2.makeInvisible();
         }
     }
 }
