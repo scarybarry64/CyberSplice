@@ -71,9 +71,14 @@ class Play extends Phaser.Scene {
         this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
-        this.roofObstacle1 = new RoofObstacle(this, game.config.width + 200, 90, 'obstacle_terminal').
+        this.roofObstacle1 = new RoofObstacle(this, game.config.width + 300, 90, 'obstacle_terminal').
         setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
+
+        // spawn roof obstacle that appears in title screen
+        this.roofObstacle2 = new RoofObstacle(this, game.config.width + 500, 90, 'obstacle_terminal').
+        setScale(2, 3).setOrigin(0.5, 0); //Origin currently set at base of sprite
+        this.add.existing(this.Obstacle2); //add to display list
 
         // set the collision property of player on objects
         this.physics.add.collider(this.player, floor);
@@ -86,6 +91,20 @@ class Play extends Phaser.Scene {
 
         // roof obstacles collision
         this.physics.add.collider(this.player, this.roofObstacle1, function (player, RoofObstacle) {
+            // Only get stuck if collision is on the left side of the roof obstacle
+            if (player.body.touching.right && RoofObstacle.body.touching.left) {
+                game.settings.isStuck = true; //set the global var true
+                player.angle = 0; // set player sprite upright
+                player.setGravityY(0); // kill gravity
+                player.body.velocity.y = 0; // neutralize vertical movement
+                player.body.velocity.x = 0 // neutralize horizontal movement
+                game.settings.scrollSpeed = -50; // slo-mo scroll speed
+                game.settings.collidedRoof = RoofObstacle; // save the obstacle stuck to as a global var
+            }
+        });
+
+        // roof obstacle2 collision
+        this.physics.add.collider(this.player, this.roofObstacle2, function (player, RoofObstacle) {
             // Only get stuck if collision is on the left side of the roof obstacle
             if (player.body.touching.right && RoofObstacle.body.touching.left) {
                 game.settings.isStuck = true; //set the global var true
@@ -241,6 +260,7 @@ class Play extends Phaser.Scene {
 
         // Update roof obstacles
         this.roofObstacle1.update();
+        this.roofObstacle2.update();
 
         // Keep the player from flying off the screen when coming
         // in contact with an obstacle while in the air
