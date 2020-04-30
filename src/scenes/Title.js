@@ -15,6 +15,14 @@ class Title extends Phaser.Scene {
     }
 
     create() {
+        // check for local storage browser support
+        if(window.localStorage) {
+            console.log('Local storage supported');
+            game.settings.isLocalEnabled = true;
+        } else {
+            console.log('Local storage not supported');
+            game.settings.isLocalEnabled = false;
+        }
 
         // spawn frozen pixel guy
         this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
@@ -29,20 +37,6 @@ class Title extends Phaser.Scene {
         let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds_terminal').
             setScale(4, 0.5);
         roof.setImmovable();
-
-        /*
-        // spawn first obstacle
-        let initObstacle = this.physics.add.sprite(game.config.width/3, 542, 'obstacle').
-            setScale(1, 4).setOrigin(0.5, 1);
-
-        //spawn second obstacle
-        let Obstacle2 = this.physics.add.sprite(game.config.width - 290, 542, 'obstacle').
-            setScale(2, 2).setOrigin(0.5, 1);
-
-        // Spawn title screen roof obstacle
-        let initRoofObstacle = this.physics.add.sprite(game.config.width - 290, 90, 'obstacle').
-            setScale(1,4).setOrigin(0.5, 0);
-        */
 
         // placeholder title screen text
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
