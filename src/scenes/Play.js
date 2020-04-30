@@ -6,7 +6,8 @@ class Play extends Phaser.Scene {
     preload() {
         // load the necessary images and tile 
         this.load.spritesheet('arrow_left', 'assets/sprites/arrow_left.png', {
-            frameWidth: 32, frameHeight: 32, endFrame: 2});
+            frameWidth: 32, frameHeight: 32, endFrame: 2
+        });
         this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
@@ -21,18 +22,22 @@ class Play extends Phaser.Scene {
         // animation config for left arrow
         var leftAnimConfig = {
             key: 'blink_l',
-            frames: this.anims.generateFrameNumbers('arrow_left', { start: 0, end: 1,
-            first: 0 }), frameRate: 12, repeat: -1
+            frames: this.anims.generateFrameNumbers('arrow_left', {
+                start: 0, end: 1,
+                first: 0
+            }), frameRate: 12, repeat: -1
         };
 
         // animation config for right arrow
         var rightAnimConfig = {
             key: 'blink_r',
-            frames: this.anims.generateFrameNumbers('arrow_left', { start: 0, end: 1,
-            first: 0 }), frameRate: 14, repeat: -1
+            frames: this.anims.generateFrameNumbers('arrow_left', {
+                start: 0, end: 1,
+                first: 0
+            }), frameRate: 14, repeat: -1
         };
 
-        
+
         // create the roof obstacle particles
         this.particles = this.add.particles('obstacle_terminal');
 
@@ -41,48 +46,48 @@ class Play extends Phaser.Scene {
         this.visible = false;
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
+        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'pixel_guy_terminal');
         this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
 
         // spawn the floor and set it immovable
-        let floor = this.physics.add.sprite(game.config.width/2, game.config.width/2 + 110, 'bounds_terminal').
+        let floor = this.physics.add.sprite(game.config.width / 2, game.config.width / 2 + 110, 'bounds_terminal').
             setScale(4, 0.5);
         floor.setImmovable();
 
         // spawn the roof and set it immovable
-        let roof = this.physics.add.sprite(game.config.width/2, 40, 'bounds_terminal').
+        let roof = this.physics.add.sprite(game.config.width / 2, 40, 'bounds_terminal').
             setScale(4, 0.5);
         roof.setImmovable();
 
         // spawn initial floor obstacle that appears in title screen
         this.Obstacle1 = new Obstacle(this, game.config.width + 200, 542, 'obstacle_terminal').
-        setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(1, 4).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         //spawn second floor obstacle
         this.Obstacle2 = new Obstacle(this, game.config.width + 400, 542, 'obstacle_terminal').
-        setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(2, 2).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle2); //add to display list
 
         //spawn third floor obstacle
         this.Obstacle3 = new Obstacle(this, game.config.width + 600, 542, 'obstacle_terminal').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle3); //add to display list
 
         //spawn fourth floor obstacle
         this.Obstacle4 = new Obstacle(this, game.config.width + 800, 542, 'obstacle_terminal').
-        setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
+            setScale(Phaser.Math.Between(1.0, 3), Phaser.Math.Between(1.0, 6.5)).setOrigin(0.5, 1); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle4); //add to display list
 
         // spawn initial roof obstacle that appears in title screen
         this.roofObstacle1 = new RoofObstacle(this, game.config.width + 300, 90, 'obstacle_terminal').
-        setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
+            setScale(1, 6).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle1); //add to display list
 
         // spawn roof obstacle that appears in title screen
         this.roofObstacle2 = new RoofObstacle(this, game.config.width + 500, 90, 'obstacle_terminal').
-        setScale(2, 3).setOrigin(0.5, 0); //Origin currently set at base of sprite
+            setScale(2, 3).setOrigin(0.5, 0); //Origin currently set at base of sprite
         this.add.existing(this.Obstacle2); //add to display list
 
         // set the collision property of player on objects
@@ -124,8 +129,8 @@ class Play extends Phaser.Scene {
 
         // TIME DISPLAY
         this.timeDisplay = this.add.text(game.config.width - 60, 20, 0, {
-            fontFamily: 'Consolas', 
-            fontSize: '48px', 
+            fontFamily: 'Consolas',
+            fontSize: '48px',
             color: primaryColor,
         });
 
@@ -134,11 +139,11 @@ class Play extends Phaser.Scene {
         this.anims.create(rightAnimConfig);
 
         // add the left arrow key sprite and set invisible
-        this.blink_left = this.add.sprite(centerX-50, 45, 'blink').setScale(2, 2);
+        this.blink_left = this.add.sprite(centerX - 50, 45, 'blink').setScale(2, 2);
         this.blink_left.alpha = 0;
 
         // add the right arrow key sprite, mirror it, and set invisible
-        this.blink_right = this.add.sprite(centerX+50, 45, 'blink').setScale(2, 2);
+        this.blink_right = this.add.sprite(centerX + 50, 45, 'blink').setScale(2, 2);
         this.blink_right.flipX = true;
         this.blink_right.alpha = 0;
 
@@ -169,7 +174,7 @@ class Play extends Phaser.Scene {
 
         // EYE DISPLAY
         this.eyeDisplay = this.add.sprite(20, 20, 'eye_closed');
-        
+
     }
 
     // reveal the mash buttons anim
@@ -255,10 +260,10 @@ class Play extends Phaser.Scene {
             timerFlag = false;
         }
 
-        if(timer == 45) {
+        if (timer == 45) {
             game.settings.scrollSpeed == 250;
         }
-        
+
         // Update floor obstacles
         this.Obstacle1.update();
         this.Obstacle2.update();
@@ -326,22 +331,22 @@ class Play extends Phaser.Scene {
 
 
         // Fire code when stuck to roof obstacle
-        if(game.settings.isStuck) {
-            if(!game.settings.isPlayingAnim) {
+        if (game.settings.isStuck) {
+            if (!game.settings.isPlayingAnim) {
                 this.playAnim();
                 game.settings.isPlayingAnim = true;
             }
-            
+
             // can and does press left arrow key
-            if(this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
-                this.player.x-= 2; // jiggle player left
+            if (this.keyLeft.isDown && this.allowedToLeft && !this.keyRight.isDown) {
+                this.player.x -= 2; // jiggle player left
                 this.allowedToLeft = false;
                 this.lefts++;
                 console.log("LEFTS: " + this.lefts);
                 this.allowedToRight = true;
             }
             // can and does press right arrow key
-            else if(this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
+            else if (this.keyRight.isDown && this.allowedToRight && !this.keyLeft.isDown) {
                 this.player.x += 2; // jiggle player right
                 this.allowedToRight = false;
                 this.rights++;
@@ -350,8 +355,8 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if(this.lefts >= Phaser.Math.Between(10, 15) 
-            && this.rights >= Phaser.Math.Between(10,15) && game.settings.isStuck) {
+            if (this.lefts >= Phaser.Math.Between(10, 15)
+                && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
                 console.log("UNSTUCK! and: " + game.settings.isStuck);
                 game.settings.isPlayingAnim = false;
                 this.blink_left.alpha = 0;
@@ -371,23 +376,19 @@ class Play extends Phaser.Scene {
         //check if out of bounds to the left
         if (this.player.x < -10 && !this.isGameOver) {
             this.isGameOver = true;
-            if(timer > game.settings.highScore) {
+            if (timer > game.settings.highScore) {
                 game.settings.highScore = timer;
             }
             this.scene.start('gameOver');
         }
 
-        if(game.settings.spawnParticles) {
+        if (game.settings.spawnParticles) {
             this.spawnParticles(100, game.settings.obstacleToDestroy.y - 10);
             game.settings.spawnParticles = false;
         }
 
-         //VISION BUTTON
-         if(Phaser.Input.Keyboard.JustDown(this.keySpace)){
-            this.visible = !this.visible;
-        }
-
-        if(this.visible){
+        //VISION BUTTON
+        if (this.keySpace.isDown) {
             this.eyeDisplay.setTexture('eye_open');
             this.Obstacle1.makeVisible();
             this.Obstacle2.makeVisible();
@@ -397,7 +398,7 @@ class Play extends Phaser.Scene {
             this.roofObstacle2.makeVisible();
 
         }
-        else{
+        else {
             this.eyeDisplay.setTexture('eye_closed');
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
