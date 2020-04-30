@@ -13,13 +13,13 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
 
     // Generate random number for height of obstacle
     getRandomNumY() {
-        var ranNumY = Phaser.Math.Between(1.0, 6.5);
+        var ranNumY = Phaser.Math.Between(1, 6);
         return ranNumY;
     }
 
     // Generate random number for width of obstacle
     getRandomNumX() {
-        var ranNumX = Phaser.Math.Between(1.0, 3);
+        var ranNumX = Phaser.Math.Between(1, 3);
         return ranNumX;
     }
 
@@ -34,6 +34,8 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
 
         // when obstacle exits left side of screen
         if (this.x <= 0 - this.width) {
+            game.settings.spawnParticles = true;
+            game.settings.obstacleToDestroy = this;
             this.reset();
         }
 
@@ -49,6 +51,5 @@ class RoofObstacle extends Phaser.Physics.Arcade .Sprite {
     reset() {
         this.x = game.config.width + this.getRandomX(); //position of right side of screen
         this.setScale(this.getRandomNumX(), this.getRandomNumY()); // randomize the size (6.5 is current height of jump)
-        this.setScale(3, 6);
     }
 }
