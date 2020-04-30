@@ -177,7 +177,7 @@ class Play extends Phaser.Scene {
     }
 
     // Spawn the particles after roof obstacle destroyed
-    spawnParticles() {
+    spawnParticles(y) {
         this.particles.createEmitter({
             alpha: { start: game.settings.visionEnabled, end: !game.settings.visionEnabled },
             scale: { start: game.settings.collidedRoof.scale, end: 0 },
@@ -192,7 +192,7 @@ class Play extends Phaser.Scene {
             frequency: 110,
             maxParticles: 1,
             x: this.player.x,
-            y: this.player.y - 50,
+            y: y,
         });
     }
 
@@ -307,7 +307,7 @@ class Play extends Phaser.Scene {
                 game.settings.isPlayingAnim = false;
                 this.blink_left.alpha = 0;
                 this.blink_right.alpha = 0;
-                this.spawnParticles();
+                this.spawnParticles(this.player.y - 50);
                 this.player.setGravityY(1000); // reset the gravity
                 this.player.setVelocityX(1000);
                 game.settings.scrollSpeed = -200; // reset the scroll speed
