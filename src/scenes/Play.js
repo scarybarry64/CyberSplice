@@ -13,7 +13,6 @@ class Play extends Phaser.Scene {
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
-        this.load.spritesheet('font', './assets/fonts/knighthawks-font-filled.png', { frameWidth: 32, frameHeight: 25 });
 
     }
 
@@ -144,58 +143,6 @@ class Play extends Phaser.Scene {
         game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
         this.lefts = 0;
         this.rights = 0;
-
-
-        // TESTING DIGITAL RAIN
-
-        var codeRain = {
-            width: 2,
-            height: 20,
-            cellWidth: 16,
-            cellHeight: 16,
-            getPoints: function (quantity)
-            {
-                var cols = (new Array(codeRain.width)).fill(0);
-                var lastCol = cols.length - 1;
-                var Between = Phaser.Math.Between;
-                var RND = Phaser.Math.RND;
-                var points = [];
-    
-                for (var i = 0; i < quantity; i++)
-                {
-                    var col = Between(0, lastCol);
-                    var row = (cols[col] += 1);
-    
-                    if (RND.frac() < 0.01)
-                    {
-                        row *= RND.frac();
-                    }
-    
-                    row %= codeRain.height;
-                    row |= 0;
-    
-                    points[i] = new Phaser.Math.Vector2(16 * col, 16 * row);
-                }
-    
-                return points;
-            }
-        };
-    /*
-        this.add.particles('font').createEmitter({
-            alpha: { start: 1, end: 0.25, ease: 'Expo.easeOut' },
-            angle: 0,
-            blendMode: 'ADD',
-            emitZone: { source: codeRain, type: 'edge', quantity: 2000 },
-            frame: Phaser.Utils.Array.NumberArray(8, 58),
-            frequency: 100,
-            lifespan: 6000,
-            quantity: 25,
-            scale: -0.5,
-            tint: 0x0066ff00
-        });
-    */
-
-        // END TEST
         
     }
 
