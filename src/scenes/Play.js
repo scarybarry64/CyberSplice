@@ -275,11 +275,6 @@ class Play extends Phaser.Scene {
             }
         }
 
-        //check if out of bounds to the left
-        if (this.player.x < -10 && !this.isGameOver) {
-            this.isGameOver = true;
-            this.scene.start('gameOver');
-        }
 
         // Fire code when stuck to roof obstacle
         if(game.settings.isStuck) {
@@ -322,6 +317,15 @@ class Play extends Phaser.Scene {
                 game.settings.isStuck = false;
 
             }
+        }
+
+        //check if out of bounds to the left
+        if (this.player.x < -10 && !this.isGameOver) {
+            this.isGameOver = true;
+            if(timer > game.settings.highScore) {
+                game.settings.highScore = timer;
+            }
+            this.scene.start('gameOver');
         }
     }
 }
