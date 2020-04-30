@@ -13,7 +13,8 @@ class Play extends Phaser.Scene {
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
-        
+        this.load.spritesheet('font', './assets/fonts/knighthawks-font-filled.png', { frameWidth: 32, frameHeight: 25 });
+
     }
 
     create() {
@@ -99,27 +100,6 @@ class Play extends Phaser.Scene {
             }
         });
 
-        // set up cursor keys / controls
-        controls = this.input.keyboard.createCursorKeys();
-        this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        // BOOLEAN VARIABLES
-        this.isSlamming = false; // keeps track of if player is ground slamming
-        this.isGameOver = false; // keeps track of if game should go to game over scene'
-        this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
-        game.settings.isStuck = false; //reset the global isStuck variable
-        this.allowedToLeft = true;
-        this.allowedToRight = true;
-
-        // INTEGER VARIABLES
-        this.jumpStartHeight = 0; // used to calculate relative max jump height
-        game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
-        this.lefts = 0;
-        this.rights = 0;
-
         // TIME DISPLAY
         this.timeDisplay = this.add.text(game.config.width - 60, 20, 0, {
             fontFamily: 'Consolas', 
@@ -143,8 +123,80 @@ class Play extends Phaser.Scene {
         // start the animations
         this.blink_left.anims.play('blink_l');
         this.blink_right.anims.play('blink_r');
-        
 
+        // setup cursor keys / controls
+        controls = this.input.keyboard.createCursorKeys();
+        this.keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        // BOOLEAN VARIABLES
+        this.isSlamming = false; // keeps track of if player is ground slamming
+        this.isGameOver = false; // keeps track of if game should go to game over scene'
+        this.canHoldJump = false; // keeps track of if player can continue to gain height in their jump
+        game.settings.isStuck = false; //reset the global isStuck variable
+        this.allowedToLeft = true;
+        this.allowedToRight = true;
+
+        // INTEGER VARIABLES
+        this.jumpStartHeight = 0; // used to calculate relative max jump height
+        game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
+        this.lefts = 0;
+        this.rights = 0;
+
+
+        // TESTING DIGITAL RAIN
+
+        var codeRain = {
+            width: 2,
+            height: 20,
+            cellWidth: 16,
+            cellHeight: 16,
+            getPoints: function (quantity)
+            {
+                var cols = (new Array(codeRain.width)).fill(0);
+                var lastCol = cols.length - 1;
+                var Between = Phaser.Math.Between;
+                var RND = Phaser.Math.RND;
+                var points = [];
+    
+                for (var i = 0; i < quantity; i++)
+                {
+                    var col = Between(0, lastCol);
+                    var row = (cols[col] += 1);
+    
+                    if (RND.frac() < 0.01)
+                    {
+                        row *= RND.frac();
+                    }
+    
+                    row %= codeRain.height;
+                    row |= 0;
+    
+                    points[i] = new Phaser.Math.Vector2(16 * col, 16 * row);
+                }
+    
+                return points;
+            }
+        };
+    /*
+        this.add.particles('font').createEmitter({
+            alpha: { start: 1, end: 0.25, ease: 'Expo.easeOut' },
+            angle: 0,
+            blendMode: 'ADD',
+            emitZone: { source: codeRain, type: 'edge', quantity: 2000 },
+            frame: Phaser.Utils.Array.NumberArray(8, 58),
+            frequency: 100,
+            lifespan: 6000,
+            quantity: 25,
+            scale: -0.5,
+            tint: 0x0066ff00
+        });
+    */
+
+        // END TEST
+        
     }
 
     // reveal the mash buttons anim
@@ -177,7 +229,7 @@ class Play extends Phaser.Scene {
     }
 
     // Spawn the particles after roof obstacle destroyed, param is x and y coord
-    spawnParticles(x, y) {
+    spawnParticlesStuck(x, y) {
         this.particles.createEmitter({
             alpha: { start: game.settings.visionEnabled, end: !game.settings.visionEnabled },
             scale: { start: game.settings.collidedRoof.scale, end: 0 },
@@ -191,7 +243,27 @@ class Play extends Phaser.Scene {
             blendMode: 'ADD',
             frequency: 110,
             maxParticles: 1,
-            x: this.player.x,
+            x: x,
+            y: y,
+        });
+    }
+
+    // Spawn the particles for each passing obstacle, param is x and y coord
+    spawnParticles(x, y) {
+        this.particles.createEmitter({
+            alpha: { start: game.settings.visionEnabled, end: !game.settings.visionEnabled },
+            scale: { start: game.settings.obstacleToDestroy.scale, end: 0 },
+            //tint: { start: 0xff945e, end: 0xff945e },
+            speed: 10,
+            accelerationY: -300,
+            accelerationX: -300,
+            angle: { min: 0, max: 0 },
+            rotate: { min: -180, max: 180 },
+            lifespan: { min: 1000, max: 1100 },
+            blendMode: 'ADD',
+            frequency: 110,
+            maxParticles: 1,
+            x: x,
             y: y,
         });
     }
@@ -307,7 +379,7 @@ class Play extends Phaser.Scene {
                 game.settings.isPlayingAnim = false;
                 this.blink_left.alpha = 0;
                 this.blink_right.alpha = 0;
-                this.spawnParticles(this.player.x, this.player.y - 50); //pass the y coord
+                this.spawnParticlesStuck(this.player.x, this.player.y - 50); //pass the y coord
                 this.player.setGravityY(1000); // reset the gravity
                 this.player.setVelocityX(1000);
                 game.settings.scrollSpeed = -200; // reset the scroll speed
@@ -327,5 +399,13 @@ class Play extends Phaser.Scene {
             }
             this.scene.start('gameOver');
         }
+
+        if(game.settings.spawnParticles) {
+            console.log("SPAWN");
+            this.spawnParticles(100, game.settings.obstacleToDestroy.y - 10);
+            game.settings.spawnParticles = false;
+        }
+        //this.spawnParticles(200,200);
+        console.log(game.settings.spawnParticles);
     }
 }
