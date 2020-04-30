@@ -12,6 +12,10 @@ class Play extends Phaser.Scene {
 
     create() {
 
+        //Timer variable for vision
+        this.timer = 100;
+        this.visible = false;
+
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 400, 'pixel_guy');
         this.player.setVelocityY(-300); // initial jump off title screen platform
@@ -92,7 +96,6 @@ class Play extends Phaser.Scene {
         game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
 
     }
-
     // Initial Jump made from object, -300 is the smallest possible jump height
     startJump() {
         this.player.setVelocityY(-300);
@@ -118,7 +121,7 @@ class Play extends Phaser.Scene {
 
     // ** UPDATE FUNCTION **
     update() {
-        console.log(this.player.y);
+        //console.log(this.player.y);
 
         // Update floor obstacles
         this.Obstacle1.update();
@@ -182,6 +185,27 @@ class Play extends Phaser.Scene {
                     this.isSlamming = false;   
                 }
             }
+        }
+
+        //VISION BUTTON
+        if(Phaser.Input.Keyboard.JustDown(this.keySpace)){
+            this.visible = !this.visible;
+        }
+
+        if(this.visible){
+            this.Obstacle1.makeVisible();
+            this.Obstacle2.makeVisible();
+            this.Obstacle3.makeVisible();
+            this.Obstacle4.makeVisible();
+            this.roofObstacle1.makeVisible();
+
+        }
+        else{
+            this.Obstacle1.makeInvisible();
+            this.Obstacle2.makeInvisible();
+            this.Obstacle3.makeInvisible();
+            this.Obstacle4.makeInvisible();
+            this.roofObstacle1.makeInvisible();
         }
 
         //check if out of bounds to the left

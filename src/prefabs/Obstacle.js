@@ -8,7 +8,6 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
         this.setFrictionX(0); // makes the player character slide on top
         this.scene.physics.world.enableBody(this, 0);
         scene.add.existing(this);
-        this.visible = false;
     }
 
     // Generate random number for height of obstacle
@@ -37,17 +36,19 @@ class Obstacle extends Phaser.Physics.Arcade .Sprite {
             this.reset();
         }
 
-        if (!this.visible){
-            this.alpha = 0;
-        }
-        else{
-            this.alpha = 1;
-        }
     }
 
     // reset the obstacle to the right of the screen
     reset() {
         this.x = game.config.width + this.getRandomX(); //position of right side of screen
         this.setScale(this.getRandomNumX(), this.getRandomNumY()); // randomize the size (6.5 is current height of jump)
+    }
+
+    makeVisible(){
+        this.alpha = 1;
+    }
+
+    makeInvisible(){
+        this.alpha = 0;
     }
 }
