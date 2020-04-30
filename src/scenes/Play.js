@@ -13,7 +13,8 @@ class Play extends Phaser.Scene {
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
-
+        this.load.image('eye_closed', './assets/sprites/eye_closed.png');
+        this.load.image('eye_open', './assets/sprites/eye_open.png');
     }
 
     create() {
@@ -165,6 +166,9 @@ class Play extends Phaser.Scene {
         game.settings.scrollSpeed = -200; // global game scroll speed, this is how we imitate time dilation
         this.lefts = 0;
         this.rights = 0;
+
+        // EYE DISPLAY
+        this.eyeDisplay = this.add.sprite(20, 20, 'eye_closed');
         
     }
 
@@ -384,6 +388,7 @@ class Play extends Phaser.Scene {
         }
 
         if(this.visible){
+            this.eyeDisplay.setTexture('eye_open');
             this.Obstacle1.makeVisible();
             this.Obstacle2.makeVisible();
             this.Obstacle3.makeVisible();
@@ -393,6 +398,7 @@ class Play extends Phaser.Scene {
 
         }
         else{
+            this.eyeDisplay.setTexture('eye_closed');
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
             this.Obstacle3.makeInvisible();
