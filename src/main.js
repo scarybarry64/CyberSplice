@@ -28,6 +28,8 @@ game.settings = {
     isPlayingAnim: false, // if the mash keys anim is playing
     highScore: 0, // current high score
     isLocalEnabled: false, // is local storage enabled
+    spawnParticles: false, // check if should spawn particles
+    obstacleToDestroy: 0, // the obstacle to spawn the particles from
 }
 
 // define globals
