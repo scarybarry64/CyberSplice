@@ -15,15 +15,6 @@ class Title extends Phaser.Scene {
     }
 
     create() {
-        // check for local storage browser support
-        if(window.localStorage) {
-            console.log('Local storage supported');
-            game.settings.isLocalEnabled = true;
-        } else {
-            console.log('Local storage not supported');
-            game.settings.isLocalEnabled = false;
-        }
-
         // spawn frozen pixel guy
         this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
         this.player.setGravityY(0);
