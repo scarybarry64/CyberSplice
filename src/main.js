@@ -40,3 +40,6 @@ let paddle = null;
 let primaryColor = '#03C04A';
 let initialTime = 0;
 let timerFlag = false;
+const maxPower = 100;
+const drainRate = 10; // rate at which power drains per second
+const regenRate = 5; // rate at which power regens per second

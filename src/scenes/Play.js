@@ -175,6 +175,8 @@ class Play extends Phaser.Scene {
         // EYE DISPLAY
         this.eyeDisplay = this.add.sprite(20, 20, 'eye_closed');
 
+        // Power variable
+        this.power = maxPower;
     }
 
     // reveal the mash buttons anim
@@ -373,8 +375,8 @@ class Play extends Phaser.Scene {
             }
         }
 
-        //check if out of bounds to the left
-        if (this.player.x < -10 && !this.isGameOver) {
+        // Game ends if player is out of bounds or runs out of power
+        if ((this.player.x < -10 && !this.isGameOver) || (this.power <= 0)) {
             this.isGameOver = true;
             if (timer > game.settings.highScore) {
                 game.settings.highScore = timer;
@@ -387,9 +389,10 @@ class Play extends Phaser.Scene {
             game.settings.spawnParticles = false;
         }
 
-        //VISION BUTTON
+        // VISION MECHANIC
         if (this.keySpace.isDown) {
-            this.eyeDisplay.setTexture('eye_open');
+
+            // Display obstacles
             this.Obstacle1.makeVisible();
             this.Obstacle2.makeVisible();
             this.Obstacle3.makeVisible();
@@ -397,15 +400,34 @@ class Play extends Phaser.Scene {
             this.roofObstacle1.makeVisible();
             this.roofObstacle2.makeVisible();
 
+            // Display open eye
+            this.eyeDisplay.setTexture('eye_open');
+
+            // Drain power
+            this.power -= (drainRate / 60);
+            console.log("Power is draining: " + this.power);
         }
         else {
-            this.eyeDisplay.setTexture('eye_closed');
+
+            // hide obstacles
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
             this.Obstacle3.makeInvisible();
             this.Obstacle4.makeInvisible();
             this.roofObstacle1.makeInvisible();
             this.roofObstacle2.makeInvisible();
+
+            // eye is closed
+            this.eyeDisplay.setTexture('eye_closed');
+
+            // regen power
+            if (this.power < maxPower) {
+                this.power += (regenRate / 60);
+                console.log("Power is regenerating: " + this.power);
+            }
+            else {
+                this.power = maxPower;
+            }
         }
     }
 }
