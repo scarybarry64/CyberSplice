@@ -35,7 +35,6 @@ class Play extends Phaser.Scene {
         // create the roof obstacle particles
         this.particles = this.add.particles('obstacle_terminal');
 
-
         // spawn player and set its gravity
         this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
         this.player.setVelocityY(-500); // initial jump off title screen platform
@@ -229,6 +228,10 @@ class Play extends Phaser.Scene {
             this.timeDisplay.x -= this.timeDisplay.width / 3;
             timerFlag = false;
         }
+
+        if(timer == 45) {
+            game.settings.scrollSpeed == 250;
+        }
         
         // Update floor obstacles
         this.Obstacle1.update();
@@ -348,11 +351,8 @@ class Play extends Phaser.Scene {
         }
 
         if(game.settings.spawnParticles) {
-            console.log("SPAWN");
             this.spawnParticles(100, game.settings.obstacleToDestroy.y - 10);
             game.settings.spawnParticles = false;
         }
-        //this.spawnParticles(200,200);
-        console.log(game.settings.spawnParticles);
     }
 }
