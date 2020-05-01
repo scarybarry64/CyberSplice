@@ -12,6 +12,7 @@ class Title extends Phaser.Scene {
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
+        this.load.audio('music', './assets/audio/SynthKid_Chromatic.mp3');
     }
 
     create() {

@@ -19,6 +19,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.music = this.sound.add('music');
+        this.music.play();
+
         localStorage.clear();
         // animation config for left arrow
         var leftAnimConfig = {
@@ -380,6 +383,7 @@ class Play extends Phaser.Scene {
 
         // Game ends if player is out of bounds or runs out of power
         if ((this.player.x < -10 && !this.isGameOver) || (this.power <= 0)) {
+            this.music.pause();
             this.isGameOver = true;
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
             if (timer > game.settings.highScore) {
