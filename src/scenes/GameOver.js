@@ -18,16 +18,22 @@ class GameOver extends Phaser.Scene {
         // handle high score
         // check if local storage is supported in the brower
         if(window.localStorage){
+            console.log("Supports Brower Storage");
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
+            if(!locScore){
+                console.log("WE HERE");
+                this.updateScore(); //update the local storage
+            }
             if(game.settings.highScore > locScore) { // if a new high score should be reported
                 this.updateScore(); //update the local storage
             }
             // add the high score text
-        this.add.text(centerX, centerY+5, "This browser's high score: " + locScore, {
-            fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
-        }).setOrigin(0.5);
+            this.add.text(centerX, centerY+5, "This browser's high score: " + locScore, {
+                fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+                }).setOrigin(0.5);
         // ELSE if local storage is not supported
         } else {
+            console.log("Does not support Brower Storage");
             // Just add the current session high score to the screen
             this.add.text(centerX, centerY+5, 'Current session high score: ' + game.settings.highScore, {
                 fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
