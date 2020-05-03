@@ -416,7 +416,7 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if (this.lefts >= Phaser.Math.Between(10, 15)
+            if (this.lefts >= Phaser.Math.Between(5, 8)
                     && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
                 this.sound.play('sfx_unstuck');
                 game.settings.isPlayingAnim = false;
@@ -443,7 +443,6 @@ class Play extends Phaser.Scene {
                 game.settings.highScore = timer;
             }
             if (!locScore) {
-                console.log("WE HERE");
                 localStorage.setItem('highscore', game.settings.highScore);
             }
             this.scene.start('gameOver');
@@ -481,7 +480,7 @@ class Play extends Phaser.Scene {
             else {
                 this.powerBar.width = 0;
             }
-            console.log("Power is draining: " + this.power);
+            // console.log("Power is draining: " + this.power);
         }
         else {
 
@@ -507,7 +506,7 @@ class Play extends Phaser.Scene {
                 if (this.power > maxPower) {
                     this.power = maxPower;
                 }
-                console.log("Power is regenerating: " + this.power);
+                // console.log("Power is regenerating: " + this.power);
             }
             if (this.powerBar.width < 200) {
                 this.powerBar.width += (((200 / maxPower) * regenRate) / 60);
