@@ -34,6 +34,8 @@ game.settings = {
     isLocalEnabled: false, // is local storage enabled
     spawnParticles: false, // check if should spawn particles
     obstacleToDestroy: 0, // the obstacle to spawn the particles from
+    shownEye: false, // has enabled view
+    regenDone: true,
 }
 
 // define globals
@@ -47,3 +49,4 @@ let timerFlag = false;
 const maxPower = 100;
 const drainRate = 10; // rate at which power drains per second
 const regenRate = 5; // rate at which power regens per second
+let isRunning = true; // for player sprite animation tracking

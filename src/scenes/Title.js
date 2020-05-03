@@ -6,18 +6,22 @@ class Title extends Phaser.Scene {
     preload() {
         // load the necessary images and tile sprites
         
-        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
-        this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
+        this.load.atlas('Glitch', './assets/sprites/Glitch.png', './assets/sprites/Glitch.json');
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.audio('music', './assets/audio/SynthKid_Chromatic.mp3');
+
+        // load audio
+        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_select', './assets/audio/Blip_Select5.wav');
+
     }
 
     create() {
-        // spawn frozen pixel guy
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
+        // spawn frozen player
+        this.player = this.physics.add.sprite(game.config.width/3, 525, 'Glitch', 'Glitch_Running_01');
         this.player.setGravityY(0);
 
         // spawn the floor and set it immovable
@@ -34,14 +38,17 @@ class Title extends Phaser.Scene {
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
             fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 150, 'UP ARROW to Jump', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 175, 'DOWN ARROW to Ground Slam', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
         this.add.text(centerX, centerY - 20, 'JUMP to START', {
             fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 145, 'UP ARROW to Jump', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 170, 'DOWN ARROW to Ground Slam', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 195, 'Hold SPACEBAR for Cyber Vision', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
         }).setOrigin(0.5);
 
         // set up cursor keys
@@ -52,6 +59,7 @@ class Title extends Phaser.Scene {
         // check for UP input
         if (Phaser.Input.Keyboard.JustDown(controls.up)) {
             initialTime = this.time.now;
+            this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
     }

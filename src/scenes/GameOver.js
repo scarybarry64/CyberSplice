@@ -6,22 +6,23 @@ class GameOver extends Phaser.Scene {
 
     preload() {
         // load the necessary images and tile sprites
-        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
     
+        // load audio
+        this.load.audio('sfx_select', './assets/audio/Blip_Select5.wav');
+
     }
 
     create() {
         // handle high score
         // check if local storage is supported in the brower
         if(window.localStorage){
-            console.log("Supports Brower Storage");
+            console.log("Supports Browser Storage");
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
             if(!locScore){
-                console.log("WE HERE");
                 this.updateScore(); //update the local storage
             }
             if(game.settings.highScore > locScore) { // if a new high score should be reported
@@ -72,6 +73,7 @@ class GameOver extends Phaser.Scene {
     update() {
         // check for DOWN input
         if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+            this.sound.play('sfx_select');
             this.scene.start('titleScene');
         }
     }

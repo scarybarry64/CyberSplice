@@ -8,23 +8,36 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('arrow_left', 'assets/sprites/arrow_left.png', {
             frameWidth: 32, frameHeight: 32, endFrame: 2
         });
-        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
-        this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
+        this.load.atlas('Glitch', './assets/sprites/Glitch.png', './assets/sprites/Glitch.json'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('eye_closed', './assets/sprites/eye_closed.png');
         this.load.image('eye_open', './assets/sprites/eye_open.png');
+        this.load.image('eye_disabled', './assets/sprites/eye_disabled.png');
+
+        // load audio
+        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_stuck', './assets/audio/Hit_Hurt7.wav');
+        this.load.audio('sfx_unstuck', './assets/audio/Powerup22.wav');
+        this.load.audio('sfx_view', './assets/audio/Pickup_Coin27.wav');
+        this.load.audio('sfx_viewOff', './assets/audio/Hit_Hurt29.wav');
+        this.load.audio('sfx_slam', './assets/audio/Hit_Hurt39.wav');
+
+
     }
 
     create() {
+        // play music when scene begins
         this.music = this.sound.add('music');
         this.music.play();
 
+        // clear browser storage
         localStorage.clear();
+
         // animation config for left arrow
-        var leftAnimConfig = {
+        let leftAnimConfig = {
             key: 'blink_l',
             frames: this.anims.generateFrameNumbers('arrow_left', {
                 start: 0, end: 1,
@@ -33,14 +46,13 @@ class Play extends Phaser.Scene {
         };
 
         // animation config for right arrow
-        var rightAnimConfig = {
+        let rightAnimConfig = {
             key: 'blink_r',
             frames: this.anims.generateFrameNumbers('arrow_left', {
                 start: 0, end: 1,
                 first: 0
             }), frameRate: 14, repeat: -1
         };
-
 
         // create the roof obstacle particles
         this.particles = this.add.particles('obstacle_terminal');
@@ -50,9 +62,33 @@ class Play extends Phaser.Scene {
         this.visible = false;
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'pixel_guy_terminal');
+        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'Glitch', 'Glitch_Running_01');
         this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
+
+        // player running animation config
+        let playerRunAnimConfig = {
+            key: 'running',
+            frames: this.anims.generateFrameNames('Glitch', {
+                prefix: 'Glitch_Running_',
+                start: 1,
+                end: 8,
+                suffix: '',
+                zeroPad: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        };
+
+        // player jumping animation config
+        let playerJumpAnimConfig = {
+            key: 'jumping',
+            defaultTextureKey: 'Glitch',
+            frames: [
+                { frame: 'Glitch_Jumping' }
+            ],
+            repeat: -1
+        };
 
         // spawn the floor and set it immovable
         let floor = this.physics.add.sprite(game.config.width / 2, game.config.width / 2 + 110, 'bounds_terminal').
@@ -141,6 +177,8 @@ class Play extends Phaser.Scene {
         //ANIMATION 
         this.anims.create(leftAnimConfig);
         this.anims.create(rightAnimConfig);
+        this.anims.create(playerRunAnimConfig);
+        this.anims.create(playerJumpAnimConfig);
 
         // add the left arrow key sprite and set invisible
         this.blink_left = this.add.sprite(centerX - 50, 45, 'blink').setScale(2, 2);
@@ -256,6 +294,11 @@ class Play extends Phaser.Scene {
     // ** UPDATE FUNCTION **
     update() {
 
+        // Play running animation for player sprite when running
+        if (isRunning) {
+            this.player.anims.play('running', true);
+        }
+
         // Update timer display
         let timer = Math.floor((this.time.now - initialTime) / 1000);
         this.timeDisplay.text = timer;
@@ -293,13 +336,18 @@ class Play extends Phaser.Scene {
             // Jump functionality, single jump only
             if (Phaser.Input.Keyboard.JustDown(controls.up) &&
                 this.player.body.touching.down) {
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.jumpStartHeight = this.player.y;
                 this.canHoldJump = true;
+                this.sound.play('sfx_jump');
                 this.startJump();
             }
 
             // this causes the players jump to be longer if held down
             if (this.keyUp.isDown && this.canHoldJump) {
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.holdJump();
             }
 
@@ -316,23 +364,28 @@ class Play extends Phaser.Scene {
             if (Phaser.Input.Keyboard.JustDown(controls.down) &&
                 !this.player.body.touching.down) {
                 this.isSlamming = true;
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.player.angle = 0;
                 this.groundSlam();
             }
 
             // Spin the player whilst in the air
             if (!this.player.body.touching.down && !this.isSlamming) {
-                this.player.angle += 10;
+                this.player.angle += 20;
             }
 
-            // reset the player angle when back on the ground
+            // reset the player sprite and angle when back on the ground
             if (this.player.body.touching.down) {
+                this.player.anims.play('running', true);
+                isRunning = true;
                 this.player.angle = 0;
                 this.player.setVelocityX(0);
                 if (this.isSlamming) {
                     // shake the camera (duration, intensity)
                     this.cameras.main.shake(50, 0.005);
                     this.isSlamming = false;
+                    this.sound.play('sfx_slam');
                 }
             }
         }
@@ -341,6 +394,7 @@ class Play extends Phaser.Scene {
         // Fire code when stuck to roof obstacle
         if (game.settings.isStuck) {
             if (!game.settings.isPlayingAnim) {
+                this.sound.play('sfx_stuck');
                 this.playAnim();
                 game.settings.isPlayingAnim = true;
             }
@@ -363,9 +417,9 @@ class Play extends Phaser.Scene {
             }
 
             // unstick the player
-            if (this.lefts >= Phaser.Math.Between(10, 15)
-                && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
-                console.log("UNSTUCK! and: " + game.settings.isStuck);
+            if (this.lefts >= Phaser.Math.Between(5, 8)
+                    && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
+                this.sound.play('sfx_unstuck');
                 game.settings.isPlayingAnim = false;
                 this.blink_left.alpha = 0;
                 this.blink_right.alpha = 0;
@@ -382,15 +436,14 @@ class Play extends Phaser.Scene {
         }
 
         // Game ends if player is out of bounds or runs out of power
-        if ((this.player.x < -10 && !this.isGameOver) || (this.power <= 0)) {
+        if ((this.player.x < -10 && !this.isGameOver)) { //} || (this.power <= 0)) {
             this.music.pause();
             this.isGameOver = true;
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
             if (timer > game.settings.highScore) {
                 game.settings.highScore = timer;
             }
-            if(!locScore){
-                console.log("WE HERE");
+            if (!locScore) {
                 localStorage.setItem('highscore', game.settings.highScore);
             }
             this.scene.start('gameOver');
@@ -401,8 +454,25 @@ class Play extends Phaser.Scene {
             game.settings.spawnParticles = false;
         }
 
+        // Enable use of vision bar after regening to 25% following full depletion
+        if(this.power > 25){
+            game.settings.regenDone = true;
+            this.eyeDisplay.setTexture('eye_closed');
+        }
+
+        // Disable the vision bar if fully depleted
+        if(this.power < 1) {
+            game.settings.regenDone = false;
+            this.eyeDisplay.setTexture('eye_disabled');
+        }
+
         // VISION MECHANIC
-        if (this.keySpace.isDown) {
+        if (this.keySpace.isDown && this.power > 0 && game.settings.regenDone) {
+
+            if(!game.settings.shownEye){
+                this.sound.play('sfx_view');
+                game.settings.shownEye = true;
+            }
 
             // Display obstacles
             this.Obstacle1.makeVisible();
@@ -423,11 +493,16 @@ class Play extends Phaser.Scene {
             else {
                 this.powerBar.width = 0;
             }
-            console.log("Power is draining: " + this.power);
+            // console.log("Power is draining: " + this.power);
         }
         else {
 
-            // Dide obstacles
+            if(game.settings.shownEye){
+                this.sound.play('sfx_viewOff'); //turn off eye
+                game.settings.shownEye = false;
+            }
+
+            // Hide obstacles
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
             this.Obstacle3.makeInvisible();
@@ -436,7 +511,7 @@ class Play extends Phaser.Scene {
             this.roofObstacle2.makeInvisible();
 
             // Eye is closed
-            this.eyeDisplay.setTexture('eye_closed');
+            //this.eyeDisplay.setTexture('eye_closed');
 
             // Regen power and increase power bar
             if (this.power < maxPower) {
@@ -444,7 +519,7 @@ class Play extends Phaser.Scene {
                 if (this.power > maxPower) {
                     this.power = maxPower;
                 }
-                console.log("Power is regenerating: " + this.power);
+                // console.log("Power is regenerating: " + this.power);
             }
             if (this.powerBar.width < 200) {
                 this.powerBar.width += (((200 / maxPower) * regenRate) / 60);
