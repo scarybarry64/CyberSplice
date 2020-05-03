@@ -30,6 +30,7 @@ game.settings = {
     isLocalEnabled: false, // is local storage enabled
     spawnParticles: false, // check if should spawn particles
     obstacleToDestroy: 0, // the obstacle to spawn the particles from
+    shownEye: false, // has enabled view
 }
 
 // define globals

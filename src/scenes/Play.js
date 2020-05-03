@@ -15,6 +15,15 @@ class Play extends Phaser.Scene {
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('eye_closed', './assets/sprites/eye_closed.png');
         this.load.image('eye_open', './assets/sprites/eye_open.png');
+
+        // load audio
+        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_stuck', './assets/audio/Hit_Hurt7.wav');
+        this.load.audio('sfx_unstuck', './assets/audio/Powerup22.wav');
+        this.load.audio('sfx_view', './assets/audio/Pickup_Coin27.wav');
+        this.load.audio('sfx_viewOff', './assets/audio/Hit_Hurt29.wav');
+
+
     }
 
     create() {
@@ -329,6 +338,7 @@ class Play extends Phaser.Scene {
                 this.player.anims.play('jumping', true);
                 this.jumpStartHeight = this.player.y;
                 this.canHoldJump = true;
+                this.sound.play('sfx_jump');
                 this.startJump();
             }
 
@@ -381,6 +391,7 @@ class Play extends Phaser.Scene {
         // Fire code when stuck to roof obstacle
         if (game.settings.isStuck) {
             if (!game.settings.isPlayingAnim) {
+                this.sound.play('sfx_stuck');
                 this.playAnim();
                 game.settings.isPlayingAnim = true;
             }
@@ -404,8 +415,8 @@ class Play extends Phaser.Scene {
 
             // unstick the player
             if (this.lefts >= Phaser.Math.Between(10, 15)
-                && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
-                console.log("UNSTUCK! and: " + game.settings.isStuck);
+                    && this.rights >= Phaser.Math.Between(10, 15) && game.settings.isStuck) {
+                this.sound.play('sfx_unstuck');
                 game.settings.isPlayingAnim = false;
                 this.blink_left.alpha = 0;
                 this.blink_right.alpha = 0;
@@ -444,6 +455,11 @@ class Play extends Phaser.Scene {
         // VISION MECHANIC
         if (this.keySpace.isDown) {
 
+            if(!game.settings.shownEye){
+                this.sound.play('sfx_view');
+                game.settings.shownEye = true;
+            }
+
             // Display obstacles
             this.Obstacle1.makeVisible();
             this.Obstacle2.makeVisible();
@@ -467,7 +483,12 @@ class Play extends Phaser.Scene {
         }
         else {
 
-            // Dide obstacles
+            if(game.settings.shownEye){
+                this.sound.play('sfx_viewOff'); //turn off eye
+                game.settings.shownEye = false;
+            }
+
+            // Hide obstacles
             this.Obstacle1.makeInvisible();
             this.Obstacle2.makeInvisible();
             this.Obstacle3.makeInvisible();

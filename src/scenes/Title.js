@@ -12,6 +12,11 @@ class Title extends Phaser.Scene {
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.audio('music', './assets/audio/SynthKid_Chromatic.mp3');
+
+        // load audio
+        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_select', './assets/audio/Blip_Select5.wav');
+
     }
 
     create() {
@@ -51,6 +56,7 @@ class Title extends Phaser.Scene {
         // check for UP input
         if (Phaser.Input.Keyboard.JustDown(controls.up)) {
             initialTime = this.time.now;
+            this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
     }

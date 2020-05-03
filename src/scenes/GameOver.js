@@ -11,6 +11,9 @@ class GameOver extends Phaser.Scene {
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
     
+        // load audio
+        this.load.audio('sfx_select', './assets/audio/Blip_Select5.wav');
+
     }
 
     create() {
@@ -71,6 +74,7 @@ class GameOver extends Phaser.Scene {
     update() {
         // check for DOWN input
         if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+            this.sound.play('sfx_select');
             this.scene.start('titleScene');
         }
     }
