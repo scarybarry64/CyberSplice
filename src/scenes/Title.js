@@ -38,14 +38,17 @@ class Title extends Phaser.Scene {
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
             fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 150, 'UP ARROW to Jump', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 175, 'DOWN ARROW to Ground Slam', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
         this.add.text(centerX, centerY - 20, 'JUMP to START', {
             fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 145, 'UP ARROW to Jump', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 170, 'DOWN ARROW to Ground Slam', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY + 195, 'Hold SPACEBAR for Cyber Vision', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
         }).setOrigin(0.5);
 
         // set up cursor keys
