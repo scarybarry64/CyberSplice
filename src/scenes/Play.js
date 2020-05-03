@@ -22,7 +22,7 @@ class Play extends Phaser.Scene {
         this.load.audio('sfx_unstuck', './assets/audio/Powerup22.wav');
         this.load.audio('sfx_view', './assets/audio/Pickup_Coin27.wav');
         this.load.audio('sfx_viewOff', './assets/audio/Hit_Hurt29.wav');
-        this.load.audio('sfx_slam', './assets/audio/Explosion25.wav');
+        this.load.audio('sfx_slam', './assets/audio/Hit_Hurt39.wav');
 
 
     }
