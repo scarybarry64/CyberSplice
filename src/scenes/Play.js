@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
         this.load.image('eye_closed', './assets/sprites/eye_closed.png');
         this.load.image('eye_open', './assets/sprites/eye_open.png');
+        this.load.image('eye_disabled', './assets/sprites/eye_disabled.png');
 
         // load audio
         this.load.audio('sfx_jump', './assets/audio/jump19.wav');
@@ -456,11 +457,13 @@ class Play extends Phaser.Scene {
         // Enable use of vision bar after regening to 25% following full depletion
         if(this.power > 25){
             game.settings.regenDone = true;
+            this.eyeDisplay.setTexture('eye_closed');
         }
 
         // Disable the vision bar if fully depleted
         if(this.power < 1) {
             game.settings.regenDone = false;
+            this.eyeDisplay.setTexture('eye_disabled');
         }
 
         // VISION MECHANIC
@@ -508,7 +511,7 @@ class Play extends Phaser.Scene {
             this.roofObstacle2.makeInvisible();
 
             // Eye is closed
-            this.eyeDisplay.setTexture('eye_closed');
+            //this.eyeDisplay.setTexture('eye_closed');
 
             // Regen power and increase power bar
             if (this.power < maxPower) {
