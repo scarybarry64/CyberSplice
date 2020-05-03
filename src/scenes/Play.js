@@ -453,15 +453,15 @@ class Play extends Phaser.Scene {
             game.settings.spawnParticles = false;
         }
 
+        // Enable use of vision bar after regening to 25% following full depletion
         if(this.power > 25){
             game.settings.regenDone = true;
         }
 
+        // Disable the vision bar if fully depleted
         if(this.power < 1) {
             game.settings.regenDone = false;
         }
-
-        console.log(this.power);
 
         // VISION MECHANIC
         if (this.keySpace.isDown && this.power > 0 && game.settings.regenDone) {
