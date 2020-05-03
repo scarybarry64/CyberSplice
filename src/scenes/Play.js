@@ -435,7 +435,7 @@ class Play extends Phaser.Scene {
         }
 
         // Game ends if player is out of bounds or runs out of power
-        if ((this.player.x < -10 && !this.isGameOver) || (this.power <= 0)) {
+        if ((this.player.x < -10 && !this.isGameOver)) { //} || (this.power <= 0)) {
             this.music.pause();
             this.isGameOver = true;
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
@@ -453,8 +453,18 @@ class Play extends Phaser.Scene {
             game.settings.spawnParticles = false;
         }
 
+        if(this.power > 25){
+            game.settings.regenDone = true;
+        }
+
+        if(this.power < 1) {
+            game.settings.regenDone = false;
+        }
+
+        console.log(this.power);
+
         // VISION MECHANIC
-        if (this.keySpace.isDown) {
+        if (this.keySpace.isDown && this.power > 0 && game.settings.regenDone) {
 
             if(!game.settings.shownEye){
                 this.sound.play('sfx_view');

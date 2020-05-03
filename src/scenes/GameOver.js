@@ -20,10 +20,9 @@ class GameOver extends Phaser.Scene {
         // handle high score
         // check if local storage is supported in the brower
         if(window.localStorage){
-            console.log("Supports Brower Storage");
+            console.log("Supports Browser Storage");
             var locScore = JSON.parse(localStorage.getItem('highscore')); //parse the string
             if(!locScore){
-                console.log("WE HERE");
                 this.updateScore(); //update the local storage
             }
             if(game.settings.highScore > locScore) { // if a new high score should be reported

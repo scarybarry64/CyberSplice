@@ -31,6 +31,7 @@ game.settings = {
     spawnParticles: false, // check if should spawn particles
     obstacleToDestroy: 0, // the obstacle to spawn the particles from
     shownEye: false, // has enabled view
+    regenDone: true,
 }
 
 // define globals
