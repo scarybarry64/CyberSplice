@@ -8,8 +8,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('arrow_left', 'assets/sprites/arrow_left.png', {
             frameWidth: 32, frameHeight: 32, endFrame: 2
         });
-        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
-        this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
+        this.load.atlas('Glitch', './assets/sprites/Glitch.png', './assets/sprites/Glitch.json'); //placeholder
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('bounds_terminal', './assets/sprites/bounds_terminal.png'); //placeholder terminal
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
@@ -19,12 +18,15 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // play music when scene begins
         this.music = this.sound.add('music');
         this.music.play();
 
+        // clear browser storage
         localStorage.clear();
+
         // animation config for left arrow
-        var leftAnimConfig = {
+        let leftAnimConfig = {
             key: 'blink_l',
             frames: this.anims.generateFrameNumbers('arrow_left', {
                 start: 0, end: 1,
@@ -33,14 +35,13 @@ class Play extends Phaser.Scene {
         };
 
         // animation config for right arrow
-        var rightAnimConfig = {
+        let rightAnimConfig = {
             key: 'blink_r',
             frames: this.anims.generateFrameNumbers('arrow_left', {
                 start: 0, end: 1,
                 first: 0
             }), frameRate: 14, repeat: -1
         };
-
 
         // create the roof obstacle particles
         this.particles = this.add.particles('obstacle_terminal');
@@ -50,9 +51,33 @@ class Play extends Phaser.Scene {
         this.visible = false;
 
         // spawn player and set its gravity
-        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'pixel_guy_terminal');
+        this.player = this.physics.add.sprite(game.config.width / 3, 525, 'Glitch', 'Glitch_Running_01');
         this.player.setVelocityY(-500); // initial jump off title screen platform
         this.player.setGravityY(1000); // default gravity
+
+        // player running animation config
+        let playerRunAnimConfig = {
+            key: 'running',
+            frames: this.anims.generateFrameNames('Glitch', {
+                prefix: 'Glitch_Running_',
+                start: 1,
+                end: 8,
+                suffix: '',
+                zeroPad: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        };
+
+        // player jumping animation config
+        let playerJumpAnimConfig = {
+            key: 'jumping',
+            defaultTextureKey: 'Glitch',
+            frames: [
+                { frame: 'Glitch_Jumping' }
+            ],
+            repeat: -1
+        };
 
         // spawn the floor and set it immovable
         let floor = this.physics.add.sprite(game.config.width / 2, game.config.width / 2 + 110, 'bounds_terminal').
@@ -141,6 +166,8 @@ class Play extends Phaser.Scene {
         //ANIMATION 
         this.anims.create(leftAnimConfig);
         this.anims.create(rightAnimConfig);
+        this.anims.create(playerRunAnimConfig);
+        this.anims.create(playerJumpAnimConfig);
 
         // add the left arrow key sprite and set invisible
         this.blink_left = this.add.sprite(centerX - 50, 45, 'blink').setScale(2, 2);
@@ -256,6 +283,11 @@ class Play extends Phaser.Scene {
     // ** UPDATE FUNCTION **
     update() {
 
+        // Play running animation for player sprite when running
+        if (isRunning) {
+            this.player.anims.play('running', true);
+        }
+
         // Update timer display
         let timer = Math.floor((this.time.now - initialTime) / 1000);
         this.timeDisplay.text = timer;
@@ -293,6 +325,8 @@ class Play extends Phaser.Scene {
             // Jump functionality, single jump only
             if (Phaser.Input.Keyboard.JustDown(controls.up) &&
                 this.player.body.touching.down) {
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.jumpStartHeight = this.player.y;
                 this.canHoldJump = true;
                 this.startJump();
@@ -300,6 +334,8 @@ class Play extends Phaser.Scene {
 
             // this causes the players jump to be longer if held down
             if (this.keyUp.isDown && this.canHoldJump) {
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.holdJump();
             }
 
@@ -316,17 +352,21 @@ class Play extends Phaser.Scene {
             if (Phaser.Input.Keyboard.JustDown(controls.down) &&
                 !this.player.body.touching.down) {
                 this.isSlamming = true;
+                isRunning = false;
+                this.player.anims.play('jumping', true);
                 this.player.angle = 0;
                 this.groundSlam();
             }
 
             // Spin the player whilst in the air
             if (!this.player.body.touching.down && !this.isSlamming) {
-                this.player.angle += 10;
+                this.player.angle += 20;
             }
 
-            // reset the player angle when back on the ground
+            // reset the player sprite and angle when back on the ground
             if (this.player.body.touching.down) {
+                this.player.anims.play('running', true);
+                isRunning = true;
                 this.player.angle = 0;
                 this.player.setVelocityX(0);
                 if (this.isSlamming) {
@@ -389,7 +429,7 @@ class Play extends Phaser.Scene {
             if (timer > game.settings.highScore) {
                 game.settings.highScore = timer;
             }
-            if(!locScore){
+            if (!locScore) {
                 console.log("WE HERE");
                 localStorage.setItem('highscore', game.settings.highScore);
             }

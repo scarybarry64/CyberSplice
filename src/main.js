@@ -43,3 +43,4 @@ let timerFlag = false;
 const maxPower = 100;
 const drainRate = 10; // rate at which power drains per second
 const regenRate = 5; // rate at which power regens per second
+let isRunning = true; // for player sprite animation tracking

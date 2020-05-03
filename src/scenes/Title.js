@@ -6,8 +6,7 @@ class Title extends Phaser.Scene {
     preload() {
         // load the necessary images and tile sprites
         
-        this.load.image('pixel_guy', './assets/sprites/pixel_guy.png'); //placeholder
-        this.load.image('pixel_guy_terminal', './assets/sprites/pixel_guy_terminal.png'); //placeholder
+        this.load.atlas('Glitch', './assets/sprites/Glitch.png', './assets/sprites/Glitch.json');
         this.load.image('bounds', './assets/sprites/bounds.png'); //placeholder
         this.load.image('obstacle', './assets/sprites/obstacle.png'); //placeholder
         this.load.image('obstacle_terminal', './assets/sprites/obstacle_terminal.png'); //placeholder terminal
@@ -16,8 +15,8 @@ class Title extends Phaser.Scene {
     }
 
     create() {
-        // spawn frozen pixel guy
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'pixel_guy_terminal');
+        // spawn frozen player
+        this.player = this.physics.add.sprite(game.config.width/3, 525, 'Glitch', 'Glitch_Running_01');
         this.player.setGravityY(0);
 
         // spawn the floor and set it immovable
