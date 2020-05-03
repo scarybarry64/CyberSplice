@@ -1,4 +1,8 @@
 // Barry Day, Trevor Moropoulos, Lucio Espinoza
+//Game Name: Cyber Splice
+//Completed: 5/3/2020
+//Creative Tilt: Vision mechanic that reveals hidden obstacles and old-school
+//terminal style color palette
 
 let config = {
     type: Phaser.CANVAS,
