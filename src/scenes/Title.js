@@ -36,20 +36,20 @@ class Title extends Phaser.Scene {
 
         // placeholder title screen text
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
+            fontFamily: 'Consolas', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
 
 
         // Message to start
         this.add.text(centerX, centerY - 20, 'Up Arrow to START', {
-            fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+            fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
         }).setOrigin(0.5);
 
 
         // Skips tutorial if already completed
         if (!tutorialDone) {
-            this.add.text(centerX, centerY + 145, 'Down Arrow for Tutorial', {
-                fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+            this.add.text(centerX, centerY, 'Down Arrow for TUTORIAL', {
+                fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
             }).setOrigin(0.5);
         }
 

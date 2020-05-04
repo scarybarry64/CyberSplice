@@ -376,18 +376,6 @@ class Tutorial extends Phaser.Scene {
             game.settings.scrollSpeed == 250;
         }
 
-        /*
-        // Update floor obstacles
-        this.Obstacle1.update();
-        this.Obstacle2.update();
-        this.Obstacle3.update();
-        this.Obstacle4.update();
-
-        // Update roof obstacles
-        this.roofObstacle1.update();
-        this.roofObstacle2.update();
-        */
-
         // Keep the player from flying off the screen when coming
         // in contact with an obstacle while in the air
         if (this.player.body.velocity.x != 0) {
@@ -435,7 +423,7 @@ class Tutorial extends Phaser.Scene {
 
             // Spin the player whilst in the air
             if (!this.player.body.touching.down && !this.isSlamming) {
-                this.player.angle += 20;
+                this.player.angle += 40;
             }
 
             // reset the player sprite and angle when back on the ground

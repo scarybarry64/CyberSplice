@@ -372,7 +372,7 @@ class Play extends Phaser.Scene {
 
             // Spin the player whilst in the air
             if (!this.player.body.touching.down && !this.isSlamming) {
-                this.player.angle += 20;
+                this.player.angle += 40;
             }
 
             // reset the player sprite and angle when back on the ground
