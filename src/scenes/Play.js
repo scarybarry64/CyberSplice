@@ -139,6 +139,8 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.player, this.Obstacle3);
         this.physics.add.collider(this.player, this.Obstacle4);
 
+        this.physics.add.collider(this.player, this.roofObstacle1);
+        /*
         // roof obstacles collision
         this.physics.add.collider(this.player, this.roofObstacle1, function (player, RoofObstacle) {
             // Only get stuck if collision is on the left side of the roof obstacle
@@ -152,7 +154,10 @@ class Play extends Phaser.Scene {
                 game.settings.collidedRoof = RoofObstacle; // save the obstacle stuck to as a global var
             }
         });
+        */
 
+        this.physics.add.collider(this.player, this.roofObstacle2);
+        /*
         // roof obstacle2 collision
         this.physics.add.collider(this.player, this.roofObstacle2, function (player, RoofObstacle) {
             // Only get stuck if collision is on the left side of the roof obstacle
@@ -166,6 +171,7 @@ class Play extends Phaser.Scene {
                 game.settings.collidedRoof = RoofObstacle; // save the obstacle stuck to as a global var
             }
         });
+        */
 
         // TIME DISPLAY
         this.timeDisplay = this.add.text(game.config.width - 60, 20, 0, {

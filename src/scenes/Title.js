@@ -21,7 +21,7 @@ class Title extends Phaser.Scene {
 
     create() {
         // spawn frozen player
-        this.player = this.physics.add.sprite(game.config.width/3, 525, 'Glitch', 'Glitch_Running_01');
+        this.player = this.physics.add.sprite(game.config.width/3, 520, 'Glitch', 'Glitch_Running_01');
         this.player.setGravityY(0);
 
         // spawn the floor and set it immovable
