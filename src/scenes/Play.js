@@ -18,7 +18,7 @@ class Play extends Phaser.Scene {
         this.load.image('eye_disabled', './assets/sprites/eye_disabled.png');
 
         // load audio
-        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_jump', './assets/audio/Jump19.wav');
         this.load.audio('sfx_stuck', './assets/audio/Hit_Hurt7.wav');
         this.load.audio('sfx_unstuck', './assets/audio/Powerup22.wav');
         this.load.audio('sfx_view', './assets/audio/Pickup_Coin27.wav');

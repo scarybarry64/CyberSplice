@@ -14,7 +14,7 @@ class Title extends Phaser.Scene {
         this.load.audio('music', './assets/audio/SynthKid_Chromatic.mp3');
 
         // load audio
-        this.load.audio('sfx_jump', './assets/audio/jump19.wav');
+        this.load.audio('sfx_jump', './assets/audio/Jump19.wav');
         this.load.audio('sfx_select', './assets/audio/Blip_Select5.wav');
 
     }
