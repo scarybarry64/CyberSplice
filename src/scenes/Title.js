@@ -38,9 +38,21 @@ class Title extends Phaser.Scene {
         this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
             fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
-        this.add.text(centerX, centerY - 20, 'JUMP to START', {
+
+
+        // Message to start
+        this.add.text(centerX, centerY - 20, 'Up Arrow to START', {
             fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
         }).setOrigin(0.5);
+
+
+        // Message for tutorial
+        this.add.text(centerX, centerY + 145, 'Down Arrow for Tutorial', {
+            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+        }).setOrigin(0.5);
+
+
+        /*
         this.add.text(centerX, centerY + 145, 'UP ARROW to Jump', {
             fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
         }).setOrigin(0.5);
@@ -50,6 +62,8 @@ class Title extends Phaser.Scene {
         this.add.text(centerX, centerY + 195, 'Hold SPACEBAR for Cyber Vision', {
             fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
         }).setOrigin(0.5);
+        */
+
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
@@ -61,6 +75,10 @@ class Title extends Phaser.Scene {
             initialTime = this.time.now;
             this.sound.play('sfx_select');
             this.scene.start('playScene');
+        }
+        else if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+            this.sound.play('sfx_select');
+            this.scene.start('tutorialScene');
         }
     }
 }
