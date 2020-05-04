@@ -48,7 +48,7 @@ class Title extends Phaser.Scene {
 
         // Skips tutorial if already completed
         if (!tutorialDone) {
-            this.add.text(centerX, centerY, 'Down Arrow for TUTORIAL', {
+            this.add.text(centerX, centerY + 7, 'Down Arrow for TUTORIAL', {
                 fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
             }).setOrigin(0.5);
         }
