@@ -306,16 +306,10 @@ class Tutorial extends Phaser.Scene {
 
     // ** UPDATE FUNCTION **
     update() {
-
-
-
-
-
-
-
+        // Tutorial
         if (this.step == 0) {
             if (this.keyUp.isDown) {
-                this.time.delayedCall(4000, () => {
+                this.time.delayedCall(6000, () => {
                     this.step = 1;
                 }, null, this);
             }
@@ -323,7 +317,7 @@ class Tutorial extends Phaser.Scene {
         if (this.step == 1) {
             this.prompt.text = 'While jumping, press DOWN  ARROW to Ground Slam.';
             if (this.keyDown.isDown) {
-                this.time.delayedCall(4000, () => {
+                this.time.delayedCall(6000, () => {
                     this.step = 2;
                 }, null, this);
             }
@@ -331,7 +325,7 @@ class Tutorial extends Phaser.Scene {
         if (this.step == 2) {
             this.prompt.text = 'Hold SPACEBAR to use Cyber-sight.';
             if (this.keySpace.isDown) {
-                this.time.delayedCall(4000, () => {
+                this.time.delayedCall(6000, () => {
                     this.step = 3;
                 }, null, this);
             }
@@ -342,22 +336,25 @@ class Tutorial extends Phaser.Scene {
                 this.step = 4;
             }, null, this);
         }
-
         if (this.step == 4) {
-            //this.prompt.text = 'Stop using cyber-sight to slowly regenerate power,\nbut be careful as obstacles turn invisible.';
             this.prompt.text = 'No power means no cyber-sight for 5 seconds.';
-            this.time.delayedCall(6000, () => {
+            this.time.delayedCall(8000, () => {
                 this.step = 5;
             }, null, this);
         }
         if (this.step == 5) {
             this.prompt.text = 'Stop using cyber-sight to slowly regenerate power,\nbut be careful as obstacles turn invisible.';
-            this.time.delayedCall(6000, () => {
+            this.time.delayedCall(8000, () => {
                 this.step = 6;
             }, null, this);
         }
-
-
+        if (this.step == 6) {
+            this.prompt.text = 'That\'s it! Returning to main menu . . .';
+            this.time.delayedCall(6000, () => {
+                tutorialDone = true;
+                this.scene.start('titleScene');
+            }, null, this);
+        }
         // Play running animation for player sprite when running
         if (isRunning) {
             this.player.anims.play('running', true);
@@ -378,18 +375,6 @@ class Tutorial extends Phaser.Scene {
         if (timer == 45) {
             game.settings.scrollSpeed == 250;
         }
-
-        /*
-        // Update floor obstacles
-        this.Obstacle1.update();
-        this.Obstacle2.update();
-        this.Obstacle3.update();
-        this.Obstacle4.update();
-
-        // Update roof obstacles
-        this.roofObstacle1.update();
-        this.roofObstacle2.update();
-        */
 
         // Keep the player from flying off the screen when coming
         // in contact with an obstacle while in the air
@@ -438,7 +423,7 @@ class Tutorial extends Phaser.Scene {
 
             // Spin the player whilst in the air
             if (!this.player.body.touching.down && !this.isSlamming) {
-                this.player.angle += 20;
+                this.player.angle += 40;
             }
 
             // reset the player sprite and angle when back on the ground

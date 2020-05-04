@@ -30,14 +30,14 @@ class GameOver extends Phaser.Scene {
             }
             // add the high score text
             this.add.text(centerX, centerY+5, "This browser's high score: " + locScore, {
-                fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+                fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
                 }).setOrigin(0.5);
         // ELSE if local storage is not supported
         } else {
             console.log("Does not support Brower Storage");
             // Just add the current session high score to the screen
             this.add.text(centerX, centerY+5, 'Current session high score: ' + game.settings.highScore, {
-                fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+                fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
             }).setOrigin(0.5);
         }
         
@@ -54,11 +54,11 @@ class GameOver extends Phaser.Scene {
 
         // placeholder game over text
         this.add.text(centerX, centerY-50, 'GAME OVER', {
-            fontFamily: 'Helvetica', fontSize: '48px', color: primaryColor
+            fontFamily: 'Consolas', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
         
         this.add.text(centerX, centerY+50, 'Press DOWN ARROW for Main Menu', {
-            fontFamily: 'Helvetica', fontSize: '24px', color: '#FFF'
+            fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
         }).setOrigin(0.5);
 
         // set up cursor keys
