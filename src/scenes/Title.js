@@ -46,37 +46,44 @@ class Title extends Phaser.Scene {
         }).setOrigin(0.5);
 
 
-        // Message for tutorial
-        this.add.text(centerX, centerY + 145, 'Down Arrow for Tutorial', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-
-
-        /*
-        this.add.text(centerX, centerY + 145, 'UP ARROW to Jump', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 170, 'DOWN ARROW to Ground Slam', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-        this.add.text(centerX, centerY + 195, 'Hold SPACEBAR for Cyber Vision', {
-            fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
-        }).setOrigin(0.5);
-        */
-
+        // Skips tutorial if already completed
+        if (!tutorialDone) {
+            this.add.text(centerX, centerY + 145, 'Down Arrow for Tutorial', {
+                fontFamily: 'Helvetica', fontSize: '18px', color: '#FFF'
+            }).setOrigin(0.5);
+        }
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
+
+        // Running animation
+        let playerRunAnimConfig = {
+            key: 'running',
+            frames: this.anims.generateFrameNames('Glitch', {
+                prefix: 'Glitch_Running_',
+                start: 1,
+                end: 8,
+                suffix: '',
+                zeroPad: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        };
+        this.anims.create(playerRunAnimConfig);
     }
 
     update() {
+
+        // Play running animation for player sprite
+        this.player.anims.play('running', true);
+
         // check for UP input
         if (Phaser.Input.Keyboard.JustDown(controls.up)) {
             initialTime = this.time.now;
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
-        else if (Phaser.Input.Keyboard.JustDown(controls.down)) {
+        else if (Phaser.Input.Keyboard.JustDown(controls.down) && !tutorialDone) {
             this.sound.play('sfx_select');
             this.scene.start('tutorialScene');
         }
