@@ -34,21 +34,23 @@ class Title extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
-        // placeholder title screen text
-        this.add.text(centerX, centerY - 75, 'G2P1 Endless Runner', {
-            fontFamily: 'Consolas', fontSize: '48px', color: primaryColor
+        // title stuff
+        this.add.text(centerX, centerY / 1.5 - 10, 'CyberSplice', {
+            fontFamily: 'Consolas', fontSize: '60px', color: primaryColor
+        }).setOrigin(0.5);
+        this.add.text(centerX, centerY - 40, 'A Matrix-esque endless runner\nby Barry Day, Trevor Moropoulos, and Lucio Espinoza', {
+            fontFamily: 'Consolas', fontSize: '20px', color: primaryColor, align: 'center'
         }).setOrigin(0.5);
 
-
         // Message to start
-        this.add.text(centerX, centerY - 20, 'Up Arrow to START', {
+        this.add.text(centerX, game.config.height - 70, 'Up Arrow to START', {
             fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
         }).setOrigin(0.5);
 
 
         // Skips tutorial if already completed
         if (!tutorialDone) {
-            this.add.text(centerX, centerY + 7, 'Down Arrow for TUTORIAL', {
+            this.add.text(centerX, game.config.height - 30, 'Down Arrow for TUTORIAL', {
                 fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
             }).setOrigin(0.5);
         }
@@ -84,6 +86,7 @@ class Title extends Phaser.Scene {
             this.scene.start('playScene');
         }
         else if (Phaser.Input.Keyboard.JustDown(controls.down) && !tutorialDone) {
+            initialTime = this.time.now;
             this.sound.play('sfx_select');
             this.scene.start('tutorialScene');
         }

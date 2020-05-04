@@ -52,12 +52,12 @@ class GameOver extends Phaser.Scene {
             setScale(4, 0.5);
         roof.setImmovable();
 
-        // placeholder game over text
+        // game over text
         this.add.text(centerX, centerY-50, 'GAME OVER', {
             fontFamily: 'Consolas', fontSize: '48px', color: primaryColor
         }).setOrigin(0.5);
         
-        this.add.text(centerX, centerY+50, 'Press DOWN ARROW for Main Menu', {
+        this.add.text(centerX, game.config.height - 50, 'Press DOWN ARROW for Main Menu', {
             fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
         }).setOrigin(0.5);
 

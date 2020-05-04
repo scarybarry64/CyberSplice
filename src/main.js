@@ -1,11 +1,18 @@
 // Barry Day, Trevor Moropoulos, Lucio Espinoza
-//Game Name: Cyber Splice
+//Game Name: CyberSplice
 //Completed: 5/3/2020
 //Creative Tilt: Vision mechanic that reveals hidden obstacles and old-school
 //terminal style color palette. Along with this the screen shaking when the
 //player uses their ground slam ability and particle effects on despawning
 //obstacles were favorite design choices of the team. The art team is especially
 //proud of the player sprite and eye sprites, which were made from scratch.
+//Lastly, the tutorial is a playable scene with prompts that only progress
+//when the player presses the correct button. This, the sight mechanic, the
+//screen shaking, and the particle effects were technically challenging but
+//proved rewarding. The custom player and eye sprites, and old-school
+//black/neon-green Matrix-esque aesthetic give the game a fresh if not
+//interesting visual style that fits within the skillset of a team of
+//programmers (which we are).
 
 let config = {
     type: Phaser.CANVAS,
