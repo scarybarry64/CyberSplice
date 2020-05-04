@@ -2,7 +2,10 @@
 //Game Name: Cyber Splice
 //Completed: 5/3/2020
 //Creative Tilt: Vision mechanic that reveals hidden obstacles and old-school
-//terminal style color palette
+//terminal style color palette. Along with this the screen shaking when the
+//player uses their ground slam ability and particle effects on despawning
+//obstacles were favorite design choices of the team. The art team is especially
+//proud of the player sprite and eye sprites, which were made from scratch.
 
 let config = {
     type: Phaser.CANVAS,
