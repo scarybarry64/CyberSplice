@@ -351,7 +351,6 @@ class Tutorial extends Phaser.Scene {
         if (this.step == 6) {
             this.prompt.text = 'That\'s it! Returning to main menu . . .';
             this.time.delayedCall(6000, () => {
-                tutorialDone = true;
                 this.scene.start('titleScene');
             }, null, this);
         }

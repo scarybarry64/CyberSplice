@@ -47,13 +47,10 @@ class Title extends Phaser.Scene {
             fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
         }).setOrigin(0.5);
 
-
-        // Skips tutorial if already completed
-        if (!tutorialDone) {
-            this.add.text(centerX, game.config.height - 30, 'Down Arrow for TUTORIAL', {
-                fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
-            }).setOrigin(0.5);
-        }
+        // Tutorial option
+        this.add.text(centerX, game.config.height - 30, 'Down Arrow for TUTORIAL', {
+            fontFamily: 'Consolas', fontSize: '24px', color: primaryColor
+        }).setOrigin(0.5);
 
         // set up cursor keys
         controls = this.input.keyboard.createCursorKeys();
@@ -85,7 +82,7 @@ class Title extends Phaser.Scene {
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
-        else if (Phaser.Input.Keyboard.JustDown(controls.down) && !tutorialDone) {
+        else if (Phaser.Input.Keyboard.JustDown(controls.down)) {
             initialTime = this.time.now;
             this.sound.play('sfx_select');
             this.scene.start('tutorialScene');
